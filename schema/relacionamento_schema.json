@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RelacionamentoComponente",
+  "type": "object",
+  "properties": {
+    "relacaoIDComponenteOrigem": {
+      "type": "string"
+    },
+    "relacaoIDComponenteDestino": {
+      "type": "string"
+    },
+    "relacaoTipo": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "relacaoIDComponenteOrigem",
+    "relacaoIDComponenteDestino"
+  ]
+}

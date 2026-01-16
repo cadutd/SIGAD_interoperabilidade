@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Inibidor",
+  "type": "object",
+  "properties": {
+    "tipo": {
+      "type": "string"
+    },
+    "chave": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tipo"
+  ]
+}

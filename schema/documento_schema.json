@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Documento",
+  "type": "object",
+    "earqDocumentoAnexo": { "type": "boolean" }, 
+  "required": ["EarqDocumentoId", "DcTitle", "dc.date.issued", "earqDocumentoMeio", "earqDocumentoStatus", "earqDocumentoVersao", "earqDocumentoAutor", "earqDocumentoDestinatario", "earqDocumentoRedator", "earqClasseId", "earqNivelDeAcessoId", "earqDocumentoIndicacaoAnotacao"  ],
+  "properties": {
+    "earqDocumentoId": { "type": "string" },
+    "DcTitle": { "type": "string" },
+    "DcDescription": { "type": "string" },
+    "DcSubject": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dc.relation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "EarqDocumentoId": { "type": "string" },
+          "DcTitle": { "type": "string" }
+        },
+        "required": ["EarqDocumentoId"]
+      }
+    },
+    "dc.date.issued": {"type": "string", "format": "date" },  # decidimos que o issued representa melhor a data de produção do documento, ou seja a data em que o documento é finalizado, assinado e passa a ter efeito.
+    "earqDocumentoNumero": { "type": "string" },
+    "earqDocumentoProtocolo": { "type": "string" },
+    "earqProcessoDossieId": { "type": "string" },
+    "earqVolumeId": { "type": "string" },
+    "earqDocumentoMeio": {
+      "type": "string",
+      "enum": ["digital", "não digital", "híbrido"]
+    },
+    "earqDocumentoStatus": {
+      "type": "string",
+      "enum": ["minuta", "original", "cópia", "versão autenticada", "conferida", "assinada digitalmente"]
+    },
+    "earqDocumentoVersao": { "type": "integer", "minimum": 1 },
+    "earqDocumentoAutor": { "$ref": "agente_schema.json" }, #multi valorado
+    "earqDocumentoDestinatario": { "$ref": "agente_schema.json" }, #multi valorado
+    "earqDocumentoOriginador": { "$ref": "agente_schema.json" }, 
+    "earqDocumentoRedator": {"$ref": "agente_schema.json"}, 
+    "earqDocumentoInteressado": { "$ref": "agente_schema.json" }, #multi valorado
+    "earqDocumentoGenero": {
+      "type": "string",
+      "enum": ["textual", "audiovisual", "cartográfico", "iconográfico", "multimídia", "micrográfico", "sonoro", "tridimensional", "eletrônico"] 
+    }, # precisa atualizar o dominio do genero, principalmente para acertar a confusão quanto aos generos inexistentes digital e eletronico
+    "earqDocumentoEspecie": { "type": "string" },
+    "earqDocumentoTipo": { "type": "string" },
+    "dc.language": {
+      "type": "string",
+      "pattern": "^[a-z]{3}$" 
+    },
+    "earqDocumentoQtFolha": { "type": "integer", "minimum": 1 },
+    "earqDocumentoSequencia": { "type": "string" }, # Remover daqui, deve estar em processo e em componente
+    "earqDocumentoAnexo": { "type": "boolean" },     
+    "earqClasseId": {
+      "type": "object",
+      "properties": {
+        "codigo": { "type": "string" },
+        "descricao": { "type": "string" },
+        "planoDeClassificacaoId": { "type": "string" }
+      },
+      "required": ["codigo"]
+    },
+    "earqDocumentoDestinacao": {
+      "type": "string",
+      "enum": ["transferência", "eliminação", "recolhimento"]
+    },
+    "earqDocumentoPrazoDeGuarda": { "type": "string", "format": "date" },
+    "earqDocumentoLocalizacao": {
+      "type": "object",
+      "properties": {
+        "enderecoFisico": { "type": "string" },
+        "siglaUnidade": { "type": "string" },
+        "observacao": { "type": "string" }
+      }
+    },
+    "earqNivelDeAcessoId": {"type": "string"}, # default ostensivo, dominio removido por que as hipoteses de sigilo são diferentes por instituição.
+    "earqDocumentoIndicacaoAnotacao": { "type": "boolean" },
+    "earqDocumentoSetorExecucao": { "type": "string" },
+    "earqComponentes": {
+      "type": "array",
+      "items": { "$ref": "componente_schema.json" }
+    },
+    "earqEventos": {
+      "type": "array",
+      "description": "Lista de eventos associados ao objeto ao longo de seu ciclo de vida (gestão, preservação, acesso, etc.).",
+      "items": {
+        "$ref": "evento_schema.json"
+      }
+    }
+  } 
+}

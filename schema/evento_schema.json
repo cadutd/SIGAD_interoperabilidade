@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "evento_schema.json",
+  "title": "Evento",
+  "type": "object",
+  "description": "Evento associado a documento/processo (ex.: ações de gestão/preservação, tramitação, captura, assinatura, verificação de fixidez etc.).",
+  "properties": {
+    "EarqEventoId": {
+      "type": "string",
+      "description": "Identificador único do evento (ex.: UUID, URI ou código interno)."
+    },
+    "EarqEventoTipo": {
+      "type": "string",
+      "enum": [
+        "ECV1",
+        "ECV2",
+        "ECV3",
+        "ECV4",
+        "ECV5",
+        "ECV6",
+        "ECV7",
+        "EPROT1",
+        "EPROT2",
+        "EPROT3",
+        "EPROT4",
+        "EPROT5",
+        "EPROT6",
+        "EPROT7",
+        "EPROT8",
+        "EPROT9",
+        "EPROT10",
+        "ECLA1",
+        "ECLA2",
+        "ECLA3",
+        "ECLA4",
+        "ECLA5",
+        "ECLA6",
+        "ECLA7",
+        "ECLA8",
+        "ECLA9",
+        "ECLA10",
+        "EPRES1",
+        "EPRES2",
+        "EPRES3",
+        "EPRES4",
+        "EPRES5",
+        "EPRES6",
+        "EPRES7",
+        "EPRES8",
+        "EPRES9"
+      ],      
+      "description": "Tipo do evento (e-ARQ Brasil / PREMIS). Ex.: 'registro', 'assinatura', 'verificacao_fixidez', 'migracao', 'acesso'."
+    },
+    "EarqEventoDataHora": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data e hora do evento (ISO 8601)."
+    },
+    "EarqEventoAgente": {
+      "$ref": "agente_schema.json",
+      "description": "Agente responsável pelo evento (pessoa, entidade coletiva ou software)."
+    },
+    "EarqEventoDetalhe": {
+      "type": "string",
+      "description": "Detalhe/descrição do evento (o que ocorreu, parâmetros relevantes, contexto)."
+    },
+    "EarqEventoResultado": {
+      "type": "string",
+      "enum": [
+        "sucesso",
+        "falha"
+      ],
+      "description": "Resultado do evento (sucesso/falha). Obrigatório quando o agente responsável for do tipo 'software'."
+    }
+  },
+  "required": [
+    "EarqEventoId",
+    "EarqEventoTipo",
+    "EarqEventoDataHora",
+    "EarqEventoAgente"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "EarqEventoAgente": {
+            "type": "object",
+            "properties": {
+              "tipo": {
+                "const": "software"
+              }
+            },
+            "required": [
+              "tipo"
+            ]
+          }
+        },
+        "required": [
+          "EarqEventoAgente"
+        ]
+      },
+      "then": {
+        "required": [
+          "EarqEventoResultado"
+        ]
+      }
+    }
+  ]
+}

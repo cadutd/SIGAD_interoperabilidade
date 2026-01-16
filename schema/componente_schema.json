@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Componente",
+  "type": "object",
+  "required": ["EarqComponenteId", "EarqComponenteNomeOriginal"],
+  "properties": {
+    "earqComponenteId": { "type": "string" },
+    "earqComponenteNomeOriginal": { "type": "string" },
+    "earqComponenteTamanho": { "type": "integer", "minimum": 0 },
+    "earqComponenteUnidadeMedidaTamanho": {
+      "type": "string",
+      "enum": ["KB", "MB", "GB", "TB", "CAIXA", "METRO LINEAR"]
+    },
+    "earqComponenteSoftwareCriacao": {
+      "$ref": "software_schema.json"
+    },
+    "earqComponenteDataCriacao": { "type": "string", "format": "date" },
+    "earqComponenteNivelComposicao": {
+      "type": "integer",
+      "enum": [0, 1]
+    },
+    "earqComponenteInibidor": {
+      "$ref": "inibidor_schema.json"
+    },
+    "earqComponenteFormato": {
+      "$ref": "formato_schema.json"
+    },
+    "earqComponenteLocalizacao": {
+      "$ref": "localizacao_schema.json"
+    },
+    "earqComponenteSuporte": {
+      "type": "string",
+      "enum": [
+        "Fita magnética",
+        "HD",
+        "CD-ROM",
+        "DVD",
+        "NAOIDENTIFICADO",
+        "PAPEL",
+        "VINIL"
+      ]
+    },
+    "earqComponenteSoftwareLeitura": {
+      "$ref": "software_schema.json"
+    },
+    "earqComponenteHardware": {
+      "$ref": "hardware_schema.json"
+    },
+    "earqComponenteOutrasDependencias": {
+      "type": "array",
+      "items": { "$ref": "dependencia_schema.json" }
+    },
+    "earqComponenteRelacionamentos": {
+      "type": "array",
+      "items": { "$ref": "relacionamento_schema.json" }
+    },
+    "earqComponenteFixidade": {
+      "$ref": "fixidade_schema.json"
+    },
+    "earqComponenteAssinaturas": {
+      "type": "array",
+      "items": { "$ref": "assinatura_schema.json" }
+    },
+    "earqEventos": {
+      "type": "array",
+      "description": "Lista de eventos associados ao objeto ao longo de seu ciclo de vida (gestão, preservação, acesso, etc.).",
+      "items": {
+        "$ref": "evento_schema.json"
+      }
+    }    
+  }
+}

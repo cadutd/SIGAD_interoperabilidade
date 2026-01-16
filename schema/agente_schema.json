@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "agente_schema.json",
+  "title": "Agente",
+  "type": "object",
+  "description": "Agente responsável por eventos (pessoa, organização, hardware ou software).",
+  "additionalProperties": false,
+  "properties": {
+    "earqAgenteId": {
+      "type": "string",
+      "description": "Identificador único do agente (ex.: UUID, URI ou código interno)."
+    },
+    "earqAgenteNome": {
+      "type": "string",
+      "description": "Nome do agente (pessoa, organização, hardware ou software)."
+    },
+	"earqFormaDoNome": {
+      "type": "string",
+       "description": "Forma do nome (ex: completo, abreviado, nome artístico)"
+    },	
+    "earqAgenteStatus": {
+      "type": "string",
+      "enum": [
+        "Ativo",
+        "Inativo"
+      ],
+      "description": "Status do agente (Ativo/Inativo)."
+    },
+    "agentType": {
+      "type": "string",
+      "enum": [
+        "Pessoa",
+        "Organização",
+        "hardware",
+        "software"
+      ],
+      "description": "Tipo do agente, metadado premis"
+    },
+    "agentVersion": {
+      "type": "string",
+      "description": "Versão do agente referenciada no EarqAgenteNome, quando o agente for software ou hardware. Metadado premis"
+    },
+    "agentNote": {
+      "type": "string",
+      "description": "Informação adicional para desambiguar ou descrever o agente. Metadado premis"
+    },
+    "earqDatasDeExistencia": {
+      "type": "object",
+      "properties": {
+        "inicio": { "type": "string", "format": "date" },
+         "fim": { "type": "string", "format": "date" }
+       },
+       "description": "Período de existência ou atividade"
+    },	
+    "earqIdentificadoresExternos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sistema": { "type": "string" },
+          "identificador": { "type": "string" }
+        }
+      },
+      "description": "Identificadores adicionais, como ORCID, CPF, CNPJ, Wikidata, VIAF etc."
+    },
+    "earqContacto": {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "telefone": { "type": "string" },
+        "endereco": { "type": "string" }
+      },
+      "description": "Informações de contato (se aplicável)"
+    }		
+  },
+  "required": [
+    "EarqAgenteId",
+    "EarqAgenteNome",
+    "EarqAgenteStatus",
+    "agentType"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "agentType": {
+            "enum": [
+              "software",
+              "hardware"
+            ]
+          }
+        },
+        "required": [
+          "agentType"
+        ]
+      },
+      "then": {
+        "required": [
+          "agentVersion"
+        ]
+      }
+    }
+  ]
+}
