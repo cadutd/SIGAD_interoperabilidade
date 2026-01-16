@@ -68,7 +68,7 @@
       "type": "string",
       "enum": ["transferência", "eliminação", "recolhimento"]
     },
-    "earqDocumentoPrazoDeGuarda": { "type": "string", "format": "date" },
+    "earqDocumentoPrazoDeGuarda": { "type": "string", "format": "date" }, #testes de git
     "earqDocumentoLocalizacao": {
       "type": "object",
       "properties": {
