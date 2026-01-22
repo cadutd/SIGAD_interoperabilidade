@@ -2,14 +2,14 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Componente",
   "type": "object",
-  "required": ["EarqComponenteId", "EarqComponenteNomeOriginal"],
+  "required": ["EarqComponenteId", "EarqComponenteNomeOriginal", "earqComponenteTamanho","earqComponenteUnidadeMedidaTamanho","earqComponenteDataCriacao", "earqComponenteLocalizacao", "earqComponenteFixidade"],
   "properties": {
     "earqComponenteId": { "type": "string" },
     "earqComponenteNomeOriginal": { "type": "string" },
     "earqComponenteTamanho": { "type": "integer", "minimum": 0 },
     "earqComponenteUnidadeMedidaTamanho": {
       "type": "string",
-      "enum": ["KB", "MB", "GB", "TB", "CAIXA", "METRO LINEAR"]
+      "enum": ["KB", "MB", "GB", "TB"]
     },
     "earqComponenteSoftwareCriacao": {
       "$ref": "software_schema.json"
@@ -31,13 +31,12 @@
     "earqComponenteSuporte": {
       "type": "string",
       "enum": [
-        "Fita magnética",
+        "FITA_MAGNETICA",
         "HD",
-        "CD-ROM",
-        "DVD",
-        "NAOIDENTIFICADO",
-        "PAPEL",
-        "VINIL"
+        "SSD",
+        "CARTAO_MEMORIA",
+        "DISCO_OPTICO",
+        "NAOIDENTIFICADO"
       ]
     },
     "earqComponenteSoftwareLeitura": {
@@ -60,7 +59,7 @@
     "earqComponenteAssinaturas": {
       "type": "array",
       "items": { "$ref": "assinatura_schema.json" }
-    },
+    }, # Pedro ficou de convidar um profissional especialista para faze esse schema de assinatura
     "earqEventos": {
       "type": "array",
       "description": "Lista de eventos associados ao objeto ao longo de seu ciclo de vida (gestão, preservação, acesso, etc.).",

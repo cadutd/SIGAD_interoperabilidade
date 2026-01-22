@@ -8,7 +8,11 @@
     },
     "hash": {
       "type": "string"
+    },
+    "originador": {
+      "type": "string"
     }
+
   },
   "required": [
     "algoritmo",

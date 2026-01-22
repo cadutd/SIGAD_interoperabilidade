@@ -3,9 +3,6 @@
   "title": "RelacionamentoComponente",
   "type": "object",
   "properties": {
-    "relacaoIDComponenteOrigem": {
-      "type": "string"
-    },
     "relacaoIDComponenteDestino": {
       "type": "string"
     },
@@ -13,8 +10,7 @@
       "type": "string"
     }
   },
-  "required": [
-    "relacaoIDComponenteOrigem",
+  "required": [    
     "relacaoIDComponenteDestino"
   ]
 }
