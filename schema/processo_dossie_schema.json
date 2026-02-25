@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Processo_Dossie",
+  "type": "object",
+    "earqProcessoAnexo": { "type": "boolean" }, 
+  "required": ["EarqProcessoId", "DcTitle", "dc.date.issued", "earqProcessoMeio", "earqProcessoStatus", "earqProcessoVersao", "earqProcessoAutor", "earqProcessoDestinatario", "earqProcessoRedator", "earqClasseId", "earqNivelDeAcessoId", "earqProcessoIndicacaoAnotacao"  ],
+  "properties": {
+    "earqProcessoId": { "type": "string" },
+    "DcTitle": { "type": "string" },
+    "DcDescription": { "type": "string" },
+    "DcSubject": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dc.relation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "EarqProcessoId": { "type": "string" },
+          "DcTitle": { "type": "string" }
+        },
+        "required": ["EarqProcessoId"]
+      }
+    },
+    "dc.date.issued": {"type": "string", "format": "date" },  
+    "earqProcessoNumero": { "type": "string" },
+    "earqProcessoProtocolo": { "type": "string" },
+    "earqProcessoDossieId": { "type": "string" },
+    "earqVolumeId": { "type": "string" },
+    "earqProcessoMeio": {
+      "type": "string",
+      "enum": ["digital", "não digital", "híbrido"]
+    },
+    "earqProcessoStatus": {
+      "type": "string",
+      "enum": ["minuta", "original", "cópia", "versão autenticada", "conferida", "assinada digitalmente"]
+    },
+    "earqProcessoVersao": { "type": "integer", "minimum": 1 },
+    "earqProcessoAutor": { "$ref": "agente_schema.json" }, #multi valorado
+    "earqProcessoDestinatario": { "$ref": "agente_schema.json" }, #multi valorado
+    "earqProcessoOriginador": { "$ref": "agente_schema.json" }, 
+    "earqProcessoRedator": {"$ref": "agente_schema.json"}, 
+    "earqProcessoInteressado": { "$ref": "agente_schema.json" }, #multi valorado
+    "earqProcessoEspecie": { "type": "string" },
+    "earqProcessoTipo": { "type": "string" },
+    "dc.language": {
+      "type": "string",
+      "pattern": "^[a-z]{3}$" 
+    },
+    "earqProcessoQtFolha": { "type": "integer", "minimum": 1 },
+    "earqProcessoAnexo": { "type": "boolean" },     
+    "earqClasseId": {
+      "type": "object",
+      "properties": {
+        "codigo": { "type": "string" },
+        "descricao": { "type": "string" },
+        "planoDeClassificacaoId": { "type": "string" }
+      },
+      "required": ["codigo"]
+    },
+    "earqProcessoDestinacao": {
+      "type": "string",
+      "enum": ["transferência", "eliminação", "recolhimento"]
+    },
+    "earqProcessoPrazoDeGuarda": { "type": "string", "format": "date" },
+    "earqProcessoLocalizacao": {
+      "type": "object",
+      "properties": {
+        "enderecoFisico": { "type": "string" },
+        "siglaUnidade": { "type": "string" },
+        "observacao": { "type": "string" }
+      }
+    },
+    "earqNivelDeAcessoId": {"type": "string"}, 
+    "earqProcessoIndicacaoAnotacao": { "type": "boolean" },
+    "earqProcessoSetorExecucao": { "type": "string" },
+    "earqVolumes": {
+      "type": "array",
+      "items": { "$ref": "volume_schema.json" }
+    },
+    "earqEventos": {
+      "type": "array",
+      "description": "Lista de eventos associados ao objeto ao longo de seu ciclo de vida (gestão, preservação, acesso, etc.).",
+      "items": {
+        "$ref": "evento_schema.json"
+      }
+    }
+  } 
+}
