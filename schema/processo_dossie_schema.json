@@ -3,45 +3,52 @@
   "title": "Processo_Dossie",
   "type": "object",
     "earqProcessoAnexo": { "type": "boolean" }, 
-  "required": ["EarqProcessoId", "DcTitle", "dc.date.issued", "earqProcessoMeio", "earqProcessoStatus", "earqProcessoVersao", "earqProcessoAutor", "earqProcessoDestinatario", "earqProcessoRedator", "earqClasseId", "earqNivelDeAcessoId", "earqProcessoIndicacaoAnotacao"  ],
+  "required": ["EarqProcessoId", , "dc.date.issued", "earqProcessoMeio", "earqProcessoStatus", "earqProcessoVersao", "earqProcessoAutor", "earqClasseId", "earqNivelDeAcessoId", "earqProcessoIndicacaoAnotacao"  ],
   "properties": {
     "earqProcessoId": { "type": "string" },
-    "DcTitle": { "type": "string" },
-    "DcDescription": { "type": "string" },
-    "DcSubject": {
-      "type": "array",
-      "items": { "type": "string" }
-    },
     "dc.relation": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "EarqProcessoId": { "type": "string" },
+          "EarqDocumentoId": { "type": "string" },
           "DcTitle": { "type": "string" }
-        },
-        "required": ["EarqProcessoId"]
+        }
       }
     },
     "dc.date.issued": {"type": "string", "format": "date" },  
     "earqProcessoNumero": { "type": "string" },
     "earqProcessoProtocolo": { "type": "string" },
     "earqProcessoDossieId": { "type": "string" },
-    "earqVolumeId": { "type": "string" },
     "earqProcessoMeio": {
       "type": "string",
       "enum": ["digital", "não digital", "híbrido"]
     },
     "earqProcessoStatus": {
       "type": "string",
-      "enum": ["minuta", "original", "cópia", "versão autenticada", "conferida", "assinada digitalmente"]
+      "enum": ["tramitando", "sobrestado", "arquivado"]  # ver dominio
     },
-    "earqProcessoVersao": { "type": "integer", "minimum": 1 },
-    "earqProcessoAutor": { "$ref": "agente_schema.json" }, #multi valorado
-    "earqProcessoDestinatario": { "$ref": "agente_schema.json" }, #multi valorado
+    "earqProcessoAutor": {
+      "type": "array",
+      "description": "Lista de autores do processo.",
+      "minItems": 1,
+      "items": { "$ref": "agente_schema.json" }
+    },
+
+    "earqProcessoDestinatario": {
+      "type": "array",
+      "description": "Lista de destinatários do processo.",
+      "items": { "$ref": "agente_schema.json" }
+    },
+
+    "earqProcessoInteressado": {
+      "type": "array",
+      "description": "Lista de interessados no processo.",
+      "items": { "$ref": "agente_schema.json" }
+    },    
     "earqProcessoOriginador": { "$ref": "agente_schema.json" }, 
     "earqProcessoRedator": {"$ref": "agente_schema.json"}, 
-    "earqProcessoInteressado": { "$ref": "agente_schema.json" }, #multi valorado
     "earqProcessoEspecie": { "type": "string" },
     "earqProcessoTipo": { "type": "string" },
     "dc.language": {
@@ -77,7 +84,17 @@
     "earqProcessoSetorExecucao": { "type": "string" },
     "earqVolumes": {
       "type": "array",
-      "items": { "$ref": "volume_schema.json" }
+      "description": "Lista ordenada de volumes pertencentes ao processo, com numeração/ordem de apresentação.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ordemVolume", "earqVolume"],
+        "properties": {
+          "ordemVolume": { "type": "integer", "minimum": 1 },
+          "earqVolume": { "$ref": "volume_schema.json" }
+        }
+      }
     },
     "earqEventos": {
       "type": "array",

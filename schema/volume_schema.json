@@ -2,10 +2,34 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Volume",
   "type": "object",
-  "properties": {
-    "documentos": {
+  "required": ["earqVolumeId", "earqVolumeNumero","earqDataAbertura"],
+  "properties": {    
+    "earqVolumeId": { "type": "string" },
+    "earqVolumeNumero": { "type": "string" },
+    "earqVolumeQtFolha": { "type": "integer", "minimum": 1 },    
+    "earqDataAbertura": {"type": "string", "format": "date"},
+    "earqDataEncerramento": {"type": "string", "format": "date"},
+    "earqVolumeLocalizacao": {
+      "type": "object",
+      "properties": {
+        "enderecoFisico": { "type": "string" },
+        "siglaUnidade": { "type": "string" },
+        "observacao": { "type": "string" }
+      }
+    },
+    "earqDocumentos": {
       "type": "array",
-      "items": { "$ref": "documentos.json" }
-    }
+      "description": "Lista ordenada de documentos pertencentes ao volume, com ordem de apresentação.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ordemApresentacao", "earqDocumentoId"],
+        "properties": {
+          "ordemApresentacao": { "type": "integer", "minimum": 1 },
+          "earqDocumentoId": { "type": "string" }
+        }
+      }
+    }    
   }
 }

@@ -18,9 +18,9 @@
         "type": "object",
         "properties": {
           "EarqDocumentoId": { "type": "string" },
+          "EarqProcessoId": { "type": "string" },
           "DcTitle": { "type": "string" }
-        },
-        "required": ["EarqDocumentoId"]
+        }
       }
     },
     "dc.date.issued": {"type": "string", "format": "date" },  # decidimos que o issued representa melhor a data de produção do documento, ou seja a data em que o documento é finalizado, assinado e passa a ter efeito.
@@ -37,11 +37,27 @@
       "enum": ["minuta", "original", "cópia", "versão autenticada", "conferida", "assinada digitalmente"]
     },
     "earqDocumentoVersao": { "type": "integer", "minimum": 1 },
-    "earqDocumentoAutor": { "$ref": "agente_schema.json" }, #multi valorado
-    "earqDocumentoDestinatario": { "$ref": "agente_schema.json" }, #multi valorado
+    "earqDocumentoAutor": {
+      "type": "array",
+      "description": "Lista de autores do documento.",
+      "minItems": 1,
+      "items": { "$ref": "agente_schema.json" }
+    },
+
+    "earqDocumentoDestinatario": {
+      "type": "array",
+      "description": "Lista de destinatários do documento.",
+      "items": { "$ref": "agente_schema.json" }
+    },
+
+    "earqDocumentoInteressado": {
+      "type": "array",
+      "description": "Lista de interessados no documento.",
+      "items": { "$ref": "agente_schema.json" }
+    },
     "earqDocumentoOriginador": { "$ref": "agente_schema.json" }, 
     "earqDocumentoRedator": {"$ref": "agente_schema.json"}, 
-    "earqDocumentoInteressado": { "$ref": "agente_schema.json" }, #multi valorado
+
     "earqDocumentoGenero": {
       "type": "string",
       "enum": ["textual", "audiovisual", "cartográfico", "iconográfico", "multimídia", "micrográfico", "sonoro", "tridimensional", "eletrônico"] 
@@ -52,8 +68,7 @@
       "type": "string",
       "pattern": "^[a-z]{3}$" 
     },
-    "earqDocumentoQtFolha": { "type": "integer", "minimum": 1 },
-    "earqDocumentoSequencia": { "type": "string" }, # Remover daqui, deve estar em processo e em componente
+    "earqDocumentoQtFolha": { "type": "integer", "minimum": 1 },    
     "earqDocumentoAnexo": { "type": "boolean" },     
     "earqClasseId": {
       "type": "object",
@@ -68,7 +83,7 @@
       "type": "string",
       "enum": ["transferência", "eliminação", "recolhimento"]
     },
-    "earqDocumentoPrazoDeGuarda": { "type": "string", "format": "date" }, #testes de git
+    "earqDocumentoPrazoDeGuarda": { "type": "string", "format": "date" }, 
     "earqDocumentoLocalizacao": {
       "type": "object",
       "properties": {
@@ -76,8 +91,12 @@
         "siglaUnidade": { "type": "string" },
         "observacao": { "type": "string" }
       }
+    },    
+    "earqNivelDeAcessoId": {
+      "type": "string",
+      "default": "ostensivo",
+      "description": "Nível de acesso do documento. Valor padrão: ostensivo."
     },
-    "earqNivelDeAcessoId": {"type": "string"}, # default ostensivo, dominio removido por que as hipoteses de sigilo são diferentes por instituição.
     "earqDocumentoIndicacaoAnotacao": { "type": "boolean" },
     "earqDocumentoSetorExecucao": { "type": "string" },
     "earqComponentes": {

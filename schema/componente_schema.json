@@ -19,6 +19,7 @@
       "type": "integer",
       "enum": [0, 1]
     },
+    "earqComponenteNumeroOrdem": { "type": "integer" }, 
     "earqComponenteInibidor": {
       "$ref": "inibidor_schema.json"
     },
@@ -60,6 +61,7 @@
       "type": "array",
       "items": { "$ref": "assinatura_schema.json" }
     }, # Pedro ficou de convidar um profissional especialista para faze esse schema de assinatura
+       # na reunião de 26/02 se não tiver um profissional de assinatura vamos tentar o hirata
     "earqEventos": {
       "type": "array",
       "description": "Lista de eventos associados ao objeto ao longo de seu ciclo de vida (gestão, preservação, acesso, etc.).",
