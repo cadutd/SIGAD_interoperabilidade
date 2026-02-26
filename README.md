@@ -74,7 +74,7 @@ Tanto **Documento** quanto **Componente** possuem `earqEventos` (lista de **Even
 
 Isso permite modelar:
 
-- cadeia de custódia digital,
+- cadeia de preservação
 - histórico de validações (fixidez, assinatura),
 - ações de preservação (migração, normalização),
 - tramitações e atos processuais.
@@ -239,7 +239,7 @@ Abaixo, para cada schema: **finalidade, campos, tipo, obrigatoriedade, valores c
 ---
 
 ### 4.12 `componente_schema.json` — Componente
-**Finalidade:** entidade técnica (arquivo, mídia, item) vinculada a Documento; concentra metadados técnicos e de preservação.
+**Finalidade:** entidade técnica (arquivo digitais) vinculada a Documento; concentra metadados técnicos e de preservação.
 
 | Campo | Tipo | Obrigatório | Valores/Regra | Observações |
 |---|---|---:|---|---|

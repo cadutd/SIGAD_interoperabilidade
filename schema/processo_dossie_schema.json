@@ -3,7 +3,7 @@
   "title": "Processo_Dossie",
   "type": "object",
     "earqProcessoAnexo": { "type": "boolean" }, 
-  "required": ["EarqProcessoId", , "dc.date.issued", "earqProcessoMeio", "earqProcessoStatus", "earqProcessoVersao", "earqProcessoAutor", "earqClasseId", "earqNivelDeAcessoId", "earqProcessoIndicacaoAnotacao"  ],
+  "required": ["EarqProcessoId", "dc.date.issued", "earqProcessoMeio", "earqProcessoStatus", "earqProcessoVersao", "earqProcessoAutor", "earqClasseId", "earqNivelDeAcessoId", "earqProcessoIndicacaoAnotacao"  ],
   "properties": {
     "earqProcessoId": { "type": "string" },
     "dc.relation": {
