@@ -26,7 +26,12 @@
 5. [Exemplo mínimo de uso (modelo mental)](#5-exemplo-mínimo-de-uso-modelo-mental)  
    5.1 [Documento com 1 componente e 2 eventos (exemplo conceitual)](#51-documento-com-1-componente-e-2-eventos-exemplo-conceitual)  
 6. [Checklist de implementação (para quem vai produzir/consumir JSON)](#6-checklist-de-implementação-para-quem-vai-produzirconsumir-json)
-
+7. [Padrão de Armazenamento e Trâmite em Sistema de Arquivos](#7-padrao-de-armazenamento-e-tramite-em-sistema-de-arquivos)  
+   7.1 [Objetivo](#71-objetivo)  
+   7.2 [Princípios Gerais](#72-principios-gerais)  
+   7.3 [Estrutura de Diretórios Recomendada](#73-estrutura-de-diretorios-recomendada)  
+   7.4 [Convenções de Nomeação](#74-convencoes-de-nomeacao)  
+   7.5 [Empacotamento para Trâmite](#75-empacotamento-para-tramite)  
 ---
 
 ## 1) Visão geral do padrão
