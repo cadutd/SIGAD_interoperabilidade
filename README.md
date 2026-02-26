@@ -334,3 +334,455 @@ Como os schemas ainda estão em desenvolvimento e com inconsistências de nomenc
 4. Formalizar semântica de campos ambíguos:
    - `earqComponenteNivelComposicao` (o que significa `0/1`).
 5. Ajustar regra condicional do Evento para checar `agentType == "software"` (ou definir `tipo` no Agente e padronizar).
+
+# 7) Padrão de Armazenamento em Sistemas de Arquivos
+
+## 7.1 Objetivo
+
+Definir um padrão lógico e previsível para organização de **Documento**, **Processo** e **Dossiê** em sistemas de arquivos (filesystem), garantindo:
+
+- interoperabilidade entre sistemas;
+- previsibilidade de localização;
+- integridade da estrutura intelectual;
+- rastreabilidade;
+- compatibilidade com preservação digital de longo prazo;
+- facilidade de migração para repositórios digitais confiáveis (RDC-Arq).
+
+Este padrão não substitui sistemas de gestão, mas estabelece uma convenção mínima para armazenamento estruturado quando o meio for filesystem (NAS, storage local, NFS, S3 compatível, etc.).
+
+## 7.2 Princípios Gerais
+
+O padrão de armazenamento em sistema de arquivos deve observar princípios arquivísticos e técnicos que garantam coerência entre estrutura intelectual e estrutura física.
+
+### 7.2.1 Hierarquia Arquivística
+
+A estrutura deve refletir a organização intelectual da informação, podendo se apresentar de duas formas:
+
+**1) Processo → Documento → Componente(s)**
+
+```
+Processo
+   └── Documento
+         └── Componente(s)
+```
+
+**2) Dossiê → Documento → Componente(s)**
+
+```
+Dossiê
+   └── Documento
+         └── Componente(s)
+```
+
+O Documento é sempre a unidade mínima intelectual estruturante dentro de Processo ou Dossiê.
+
+O Componente representa a materialização técnica do Documento (arquivo digital, mídia física, objeto híbrido etc.).
+
+---
+
+### 7.2.2 Identificador como Elemento Estruturante
+
+Sempre que possível, deve-se utilizar o identificador persistente da entidade como base para nomeação de diretórios e organização estrutural:
+
+- `earqDocumentoId`
+- `earqProcessoDossieId`
+- outro identificador institucional equivalente
+
+O identificador deve ser único, estável e não dependente de título ou descrição textual.
+
+---
+
+### 7.2.3 Separação entre Metadados e Conteúdo Binário
+
+A organização física deve distinguir claramente:
+
+- **Metadados estruturados** → arquivos `.json`
+- **Componentes digitais** → arquivos binários (PDF, DOCX, TIFF, etc.)
+
+Essa separação facilita:
+
+- validação automática por schema
+- indexação
+- preservação digital
+- auditoria
+
+---
+
+### 7.2.4 Imutabilidade Lógica
+
+Uma vez encerrado o Processo ou Dossiê:
+
+- A estrutura física não deve ser alterada sem registro de evento;
+- Alterações devem ser registradas como novo evento;
+- Recomenda-se evitar sobrescrita silenciosa de arquivos.
+
+A imutabilidade lógica é requisito essencial para garantir integridade e rastreabilidade.
+
+
+## 7.3 Estrutura de Diretórios Recomendada
+
+Esta seção estabelece o padrão obrigatório de organização de **Documento**, **Processo** e **Dossiê** em sistemas de arquivos.
+
+A estrutura deve:
+
+- Utilizar identificadores únicos como base de nomeação;
+- Manter os metadados em arquivo `.json` na raiz da entidade;
+- Garantir previsibilidade estrutural;
+- Permitir interoperabilidade e migração futura para repositórios digitais confiáveis;
+- Evitar ambiguidade entre estrutura física e estrutura intelectual.
+
+Regras gerais:
+
+1. O diretório raiz de cada entidade deve seguir o prefixo normativo:
+   - `DA-` para Documento
+   - `PR-` para Processo
+   - `DS-` para Dossiê
+
+2. O identificador único deve ser persistente e corresponder ao identificador registrado nos metadados (`earqDocumentoId`, `earqProcessoDossieId` ou equivalente).
+
+3. O arquivo de metadados (`.json`) deve estar sempre no nível raiz da entidade.
+
+4. No caso de Documento, os componentes digitais devem estar no mesmo nível do arquivo `documento.json`.
+
+---
+
+## 7.3.1 Estrutura Base
+
+### a) Documento (DA)
+
+Regras:
+
+- Deve existir uma pasta raiz com o padrão: `DA-<IdentificadorUnico>`.
+- Dentro da pasta raiz deve existir o arquivo `documento.json`, contendo os metadados conforme os schemas definidos neste manual.
+- No mesmo nível do `documento.json` devem estar os componentes digitais associados ao documento (PDF, DOCX, imagens, planilhas etc.).
+
+Estrutura exemplo:
+
+```text
+DA-<IdentificadorUnico>/
+├── documento.json
+├── documento_principal.pdf
+├── anexo_01.docx
+└── imagem_01.tif
+```
+
+---
+
+### b) Processo (PR)
+
+Regras:
+
+- Deve existir uma pasta raiz com o padrão: `PR-<IdentificadorUnico>`.
+- Dentro da pasta raiz deve existir o arquivo `processo.json`, contendo os metadados do processo conforme os schemas definidos.
+- Abaixo da pasta raiz deve existir uma pasta para cada Documento que compõe o processo.
+- Cada pasta de Documento deve obedecer integralmente ao padrão definido para Documento (`DA-`).
+
+Estrutura exemplo:
+
+```text
+PR-<IdentificadorUnico>/
+├── processo.json
+├── DA-<IdentificadorDocumento01>/
+│   ├── documento.json
+│   └── documento_01.pdf
+└── DA-<IdentificadorDocumento02>/
+    ├── documento.json
+    ├── documento_02.pdf
+    └── anexo_01.docx
+```
+
+---
+
+### c) Dossiê (DS)
+
+Regras:
+
+- Deve existir uma pasta raiz com o padrão: `DS-<IdentificadorUnico>`.
+- Dentro da pasta raiz deve existir o arquivo `dossie.json`, contendo os metadados do dossiê conforme os schemas definidos.
+- Abaixo da pasta raiz deve existir uma pasta para cada Documento que compõe o dossiê.
+- Cada pasta de Documento deve obedecer integralmente ao padrão definido para Documento (`DA-`).
+
+Estrutura exemplo:
+
+```text
+DS-<IdentificadorUnico>/
+├── dossie.json
+├── DA-<IdentificadorDocumento01>/
+│   ├── documento.json
+│   └── documento_01.pdf
+└── DA-<IdentificadorDocumento02>/
+    ├── documento.json
+    ├── documento_02.pdf
+    └── anexo_01.docx
+```
+## 7.4 Convenções de Nomeação
+
+As convenções de nomeação devem garantir:
+
+- previsibilidade estrutural;
+- interoperabilidade entre sistemas;
+- estabilidade de identificação;
+- compatibilidade com preservação digital de longo prazo.
+
+As regras abaixo complementam a estrutura definida nas Seções 7.2 e 7.3.
+
+---
+
+### 7.4.1 Nomeação de Diretórios Raiz
+
+Os diretórios raiz devem obedecer obrigatoriamente ao seguinte padrão:
+
+- Documento:  
+  `DA-<IdentificadorUnico>`
+
+- Processo:  
+  `PR-<IdentificadorUnico>`
+
+- Dossiê:  
+  `DS-<IdentificadorUnico>`
+
+O `<IdentificadorUnico>` deve:
+
+- corresponder ao identificador registrado nos metadados (`earqDocumentoId`, `earqProcessoDossieId` ou equivalente institucional);
+- ser persistente;
+- não depender de título ou descrição textual;
+- não conter espaços;
+- não conter acentos;
+- não conter caracteres especiais;
+- utilizar apenas caracteres alfanuméricos e hífen.
+
+Exemplo recomendado:
+
+```
+DA-2026-000123
+PR-2026-000456
+DS-2026-000789
+```
+
+---
+
+### 7.4.2 Nomeação de Arquivos de Metadados
+
+Os arquivos de metadados devem ter nomes fixos e padronizados:
+
+| Entidade   | Nome obrigatório |
+|------------|------------------|
+| Documento  | `documento.json` |
+| Processo   | `processo.json`  |
+| Dossiê     | `dossie.json`    |
+
+Não é permitido:
+
+- incluir versão no nome do arquivo de metadados (o versionamento deve ocorrer no campo `earqDocumentoVersao`);
+- alterar a grafia padronizada;
+- utilizar nomes derivados do título.
+
+---
+
+### 7.4.3 Nomeação de Componentes Digitais
+
+Os componentes digitais devem:
+
+- preservar, sempre que possível, o nome original do arquivo;
+- estar registrados no campo `earqComponenteNomeOriginal`;
+- evitar caracteres especiais e espaços excessivos;
+- manter extensão coerente com o formato declarado em `earqComponenteFormato`.
+
+Opcionalmente, pode-se utilizar prefixo numérico para ordenação:
+
+```
+01_oficio.pdf
+02_anexo.pdf
+03_memoria_calculo.xlsx
+```
+
+A ordenação física não substitui a ordenação lógica, que deve ser garantida pelos metadados.
+
+---
+
+### 7.4.4 Sensibilidade a Maiúsculas e Minúsculas
+
+Recomenda-se que:
+
+- nomes de diretórios e arquivos sejam tratados como case-sensitive;
+- o padrão definido (DA-, PR-, DS-) seja mantido em letras maiúsculas;
+- os nomes dos arquivos `.json` permaneçam em minúsculas.
+
+Essa padronização evita inconsistências em ambientes Linux, Unix e sistemas baseados em objetos (S3 compatível).
+
+---
+
+### 7.4.5 Proibições
+
+Não é permitido:
+
+- utilizar títulos como nome de pasta raiz;
+- renomear diretórios após sua consolidação;
+- modificar identificadores sem registro formal de evento;
+- criar estruturas paralelas fora do padrão definido.
+
+---
+
+### 7.4.6 Compatibilidade com Preservação Digital
+
+As convenções de nomeação devem:
+
+- permitir empacotamento em BagIt sem necessidade de renomeação;
+- permitir indexação automática;
+- ser compatíveis com armazenamento em NAS, NFS, storage local ou S3;
+- não depender de caminhos absolutos para interpretação semântica.
+
+A interpretação intelectual deve estar sempre garantida pelos metadados estruturados.
+
+## 7.5 Empacotamento para Trâmite
+
+### 7.5.1 Objetivo
+
+Esta seção define o padrão de empacotamento para trâmite eletrônico de Documentos, Processos e Dossiês entre órgãos ou sistemas distintos.
+
+O objetivo é:
+
+- garantir interoperabilidade entre instituições;
+- assegurar integridade e autenticidade do conteúdo transferido;
+- manter rastreabilidade da origem e destino;
+- permitir validação automatizada do pacote;
+- assegurar compatibilidade com estratégias de preservação digital.
+
+O empacotamento deve ser independente de sistema específico, baseado em padrão aberto e amplamente adotado.
+
+---
+
+### 7.5.2 Padrão BagIt
+
+O empacotamento para trâmite deve utilizar o padrão **BagIt**, definido originalmente pela Library of Congress.
+
+#### Estrutura Geral do BagIt
+
+Um pacote BagIt possui a seguinte estrutura mínima:
+
+```
+<bag-root>/
+├── bagit.txt
+├── bag-info.txt (opcional)
+├── manifest-<algoritmo>.txt
+├── tagmanifest-<algoritmo>.txt (opcional)
+└── data/
+    └── (conteúdo transferido)
+```
+
+#### Arquivos Obrigatórios
+
+- `bagit.txt`  
+  Define a versão do padrão BagIt e a codificação utilizada.
+
+- `manifest-<algoritmo>.txt`  
+  Contém os hashes (checksums) dos arquivos presentes na pasta `data/`.
+
+- Diretório `data/`  
+  Contém o conteúdo efetivo do pacote.
+
+#### Arquivos Opcionais
+
+- `bag-info.txt`  
+  Metadados administrativos do pacote (ex.: origem, contato, descrição).
+
+- `tagmanifest-<algoritmo>.txt`  
+  Hashes dos arquivos de tag (bagit.txt, bag-info.txt etc.).
+
+O algoritmo de hash recomendado é `sha256` ou superior.
+
+---
+
+### 7.5.3 Estrutura do Pacote de Trâmite
+
+O diretório raiz do pacote deve seguir obrigatoriamente o padrão:
+
+```
+TR-<NomeOrgaoOrigem>-<NomeOrgaoDestino>
+```
+
+Regras:
+
+- Não utilizar acentos;
+- Não utilizar espaços (substituir por hífen);
+- Utilizar apenas caracteres alfanuméricos e hífen;
+- O nome deve refletir claramente os órgãos envolvidos no trâmite.
+
+Exemplo:
+
+```
+TR-APESP-ARQUIVONACIONAL
+TR-TJSP-APESP
+```
+
+---
+
+### 7.5.4 Estrutura Interna do Bag
+
+Dentro do BagIt, a pasta `data/` deverá conter a seguinte estrutura:
+
+```
+TR-<Origem>-<Destino>/
+├── bagit.txt
+├── manifest-sha256.txt
+└── data/
+    ├── tramite.json
+    ├── DA-<IdentificadorDocumento>/
+    ├── PR-<IdentificadorProcesso>/
+    └── DS-<IdentificadorDossie>/
+```
+
+#### Regras de Composição
+
+1. Deve existir obrigatoriamente na raiz da pasta `data/` o arquivo:
+
+   ```
+   tramite.json
+   ```
+
+2. O arquivo `tramite.json` deve conter:
+
+   - identificação do órgão de origem;
+   - identificação do órgão de destino;
+   - data/hora do envio;
+   - lista das entidades tramitadas;
+   - identificador do pacote;
+   - algoritmo de hash utilizado;
+   - eventos associados ao envio.
+
+3. Na pasta `data/` deve existir a pasta de cada entidade tramitada:
+
+   - `DA-<IdentificadorUnico>` para Documento;
+   - `PR-<IdentificadorUnico>` para Processo;
+   - `DS-<IdentificadorUnico>` para Dossiê.
+
+4. Cada pasta deve obedecer integralmente ao padrão estrutural definido nas Seções 7.2 e 7.3 deste manual.
+
+---
+
+### 7.5.5 Integridade e Validação
+
+O pacote deve permitir:
+
+- validação de integridade por verificação de `manifest-sha256.txt`;
+- validação estrutural por schema dos arquivos `.json`;
+- verificação de completude da estrutura;
+- rastreabilidade institucional do trâmite.
+
+Recomenda-se que o recebimento do pacote gere automaticamente um evento de validação e outro de recebimento.
+
+---
+
+### 7.5.6 Considerações de Preservação
+
+O pacote de trâmite:
+
+- não substitui um AIP (Archival Information Package);
+- não constitui repositório definitivo;
+- deve ser considerado estrutura de transporte interoperável.
+
+Após o recebimento, o órgão destinatário poderá:
+
+- manter o pacote como evidência do trâmite;
+- desmembrar o conteúdo para ingestão em repositório;
+- gerar novo pacote para trâmite subsequente.
