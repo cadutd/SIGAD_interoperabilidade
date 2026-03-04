@@ -32,6 +32,22 @@
    7.3 [Estrutura de Diretórios Recomendada](#73-estrutura-de-diretorios-recomendada)  
    7.4 [Convenções de Nomeação](#74-convencoes-de-nomeacao)  
    7.5 [Empacotamento para Trâmite](#75-empacotamento-para-tramite)  
+8. [Empacotamento para Envio a RDC-Arq (SIP)](#8-empacotamento-para-envio-a-rdc-arq-sip)  
+   8.1 [Objetivo](#81-objetivo)  
+   8.2 [Modelo OAIS e Pacotes de Informação](#82-modelo-oais-e-pacotes-de-informacao)  
+   8.3 [Padrão de Empacotamento](#83-padrao-de-empacotamento)  
+   8.4 [Nomeação do Pacote SIP](#84-nomeacao-do-pacote-sip)  
+   8.5 [Estrutura Interna do SIP](#85-estrutura-interna-do-sip)  
+   8.6 [Ficha Espelho de Transferência](#86-ficha-espelho-de-transferencia)  
+   8.7 [Composição do Conteúdo do SIP](#87-composicao-do-conteudo-do-sip)  
+   8.8 [Validação do SIP](#88-validacao-do-sip)  
+   8.9 [Pacote de Informação de Representação da Guia](#89-pacote-de-informacao-de-representacao-da-guia)  
+      8.9.1 [Padrão de Empacotamento](#891-padrao-de-empacotamento)  
+      8.9.2 [Nomeação do Pacote](#892-nomeacao-do-pacote)  
+      8.9.3 [Estrutura do Pacote](#893-estrutura-do-pacote)  
+      8.9.4 [Conteúdo do Pacote](#894-conteudo-do-pacote)  
+      8.9.5 [Relação com os SIPs](#895-relacao-com-os-sips)  
+
 ---
 
 ## 1) Visão geral do padrão
@@ -251,13 +267,13 @@ Abaixo, para cada schema: **finalidade, campos, tipo, obrigatoriedade, valores c
 | `earqComponenteDataCriacao` | `date` | Não |  | Data de criação. |
 | `earqComponenteNivelComposicao` | `integer (enum)` | Não | `0` ou `1` | Nível de composição (precisa semântica explícita no padrão). |
 | `earqComponenteInibidor` | `Inibidor` (`$ref`) | Não |  |  |
-| `earqComponenteFormato` | `Formato` (`$ref`) | Não |  |  |
+| `earqComponenteFormato` | `Formato` (`$ref`) | Não |  | É Altamente recomendado o preenchimento deste metadado quando o formato é conhecido, pois ele permite mapaer quais softwares são capazes de visualizar a informação do componente |
 | `earqComponenteLocalizacao` | `Localização` (`$ref`) | Não |  |  |
 | `earqComponenteSuporte` | `string (enum)` | Não | inclui `HD`, `CD-ROM`, `DVD`, `PAPEL`, etc. | Suporte físico/lógico. |
 | `earqComponenteSoftwareLeitura` | `Software` (`$ref`) | Não |  |  |
 | `earqComponenteHardware` | `Hardware` (`$ref`) | Não |  |  |
 | `earqComponenteOutrasDependencias[]` | `Dependência` (`$ref`) | Não |  |  |
-| `earqComponenteRelacionamentos[]` | `Relacionamento` (`$ref`) | Não |  |  |
+| `earqComponenteRelacionamentos[]` | `Relacionamento` (`$ref`) | Não |  | Alguns compoentes estabelcem relações com outros compoentes, a exemplo um componete pode ser parte de outra, aprofundando esse exemplo um comoente que represernta um arquivo de folha de estilos "CSS" é relacionado com o compoente que presenta um arquivo html. É Altamente recomendado o preenchimento deste metadado.   |
 | `earqComponenteFixidade` | `Fixidade` (`$ref`) | Não |  | Hash do componente. |
 | `earqComponenteAssinaturas[]` | `Assinatura` (`$ref`) | Não |  | Assinaturas associadas. |
 | `earqEventos[]` | `Evento` (`$ref`) | Não |  | Trilha de eventos do componente. |
@@ -271,12 +287,12 @@ Abaixo, para cada schema: **finalidade, campos, tipo, obrigatoriedade, valores c
 
 | Campo | Tipo | Obrigatório | Valores/Regra | Observações |
 |---|---|---:|---|---|
-| `earqDocumentoId` | `string` | (Sim, intenção do schema) |  | Identificador do documento. ⚠️ `required` usa outro *case*. |
+| `earqDocumentoId` | `string` | (Sim, intenção do schema) |  | Identificador do documento. |
 | `DcTitle` | `string` | Sim |  | Título. |
 | `DcDescription` | `string` | Não |  | Descrição. |
 | `DcSubject[]` | `array(string)` | Não |  | Assuntos. |
 | `dc.relation[]` | `array(obj)` | Não |  | Relações com outros documentos (mínimo `EarqDocumentoId`). |
-| `dc.date.issued` | `date` | Sim |  | Definida como “data de produção/finalização” (comentário no schema). |
+| `dc.date.issued` | `date` | Sim |  | Definida como “data de produção/finalização”. este elemento do padrão dublin core é o que melhor representa a data de produção do documento, ou seja a data em que o documento é finalizado, assinado e passa a ter efeito |
 | `earqDocumentoNumero` | `string` | Não |  | Número do documento. |
 | `earqDocumentoProtocolo` | `string` | Não |  | Protocolo. |
 | `earqProcessoDossieId` | `string` | Não |  | Vincula a dossiê/processo. |
@@ -292,7 +308,7 @@ Abaixo, para cada schema: **finalidade, campos, tipo, obrigatoriedade, valores c
 | `earqDocumentoGenero` | `string (enum)` | Não | textual/audiovisual/... | Gênero documental. |
 | `earqDocumentoEspecie` | `string` | Não |  | Espécie. |
 | `earqDocumentoTipo` | `string` | Não |  | Tipo. |
-| `dc.language` | `string (pattern)` | Não | `^[a-z]{3}$` | Idioma (3 letras). |
+| `dc.language` | `string (pattern)` | Não | `^[a-z]{3}$` | Idioma (3 letras), conforme ISO 639-2:1998|
 | `earqDocumentoQtFolha` | `integer` | Não | ≥ 0 | Qt. folhas. |
 | `earqDocumentoSequencia` | `string` | Não |  | Sequência. |
 | `earqDocumentoAnexo` | `boolean` | Não |  | Se é anexo. |
@@ -716,8 +732,8 @@ Regras:
 Exemplo:
 
 ```
-TR-APESP-ARQUIVONACIONAL
-TR-TJSP-APESP
+TR-MGI-ARQUIVONACIONAL
+TR-MJ-MGI
 ```
 
 ---
@@ -791,3 +807,251 @@ Após o recebimento, o órgão destinatário poderá:
 - manter o pacote como evidência do trâmite;
 - desmembrar o conteúdo para ingestão em repositório;
 - gerar novo pacote para trâmite subsequente.
+
+
+
+## 8 Empacotamento para Envio a RDC-Arq (SIP)
+
+### 8.1 Objetivo
+
+Esta seção define o padrão de empacotamento para envio de Documentos, Processos e Dossiês a um **Repositório Arquivístico Digital Confiável (RDC-Arq)**.
+
+O empacotamento descrito nesta seção corresponde à criação de um **SIP (Submission Information Package)**, conforme definido no modelo OAIS.
+
+O objetivo é:
+
+- garantir interoperabilidade entre sistemas produtores e o RDC-Arq;
+- assegurar integridade e autenticidade da informação transferida;
+- permitir validação automatizada do pacote de ingestão;
+- manter rastreabilidade da transferência arquivística;
+- facilitar processos de ingestão automatizada no repositório.
+
+---
+
+### 8.2 Modelo OAIS e Pacotes de Informação
+
+O **OAIS (Open Archival Information System)** é um modelo de referência internacional para sistemas de preservação digital de longo prazo.
+
+O modelo define três tipos principais de pacotes de informação:
+
+| Tipo de Pacote | Função |
+|---|---|
+| SIP — Submission Information Package | Pacote submetido ao repositório para ingestão |
+| AIP — Archival Information Package | Pacote armazenado e preservado pelo repositório |
+| DIP — Dissemination Information Package | Pacote gerado para acesso ao usuário |
+
+Neste manual, esta seção trata da criação do **SIP**, que é o pacote enviado ao RDC-Arq durante processos de transferência arquivística, recolhimento ou ingestão programada de documentos digitais.
+
+---
+
+### 8.3 Padrão de Empacotamento
+
+O SIP deve utilizar o padrão **BagIt**, conforme descrito na Seção 7.5 deste manual.
+
+Estrutura geral:
+
+```
+<bag-root>/
+├── bagit.txt
+├── manifest-<algoritmo>.txt
+├── bag-info.txt (opcional)
+└── data/
+    └── (conteúdo transferido)
+```
+
+O algoritmo de hash recomendado é **sha256** ou superior.
+
+---
+
+### 8.4 Nomeação do Pacote SIP
+
+A pasta raiz do BagIt deve seguir o padrão:
+
+```
+SIP-<CODEARQ>-<NOME_DO_FUNDO>-<ID_GUIA>-<CODIGO_CLASSIFICACAO_COMPLETO>-<DATAHORAEMPACOTAMENTO>
+```
+
+Onde:
+
+| Elemento | Descrição |
+|---|---|
+| CODEARQ | Código do cadastro nacional de entidades custoriadoras de acervos do arquivo responsável pela custódia |
+| NOME_DO_FUNDO | Nome do fundo arquivístico, a ser informado pelo Arquivo de destino do pacote |
+| ID_GUIA | Identificador da guia de transferência ou recolhimento |
+| CODIGO_CLASSIFICACAO_COMPLETO | Código de classificação completo |
+| DATAHORAEMPACOTAMENTO | Data e hora de criação do pacote |
+
+Regras:
+
+- utilizar "_" como separador do código de classificação;
+- não utilizar acentos;
+- evitar espaços;
+- utilizar apenas caracteres alfanuméricos, hífen e underscore.
+
+Exemplo:
+
+```
+SIP-AN-MINISTERIO_DA_JUSTICA-GT2026-04-02_01_03-20260402T143500
+```
+
+---
+
+### 8.5 Estrutura Interna do SIP
+
+Estrutura do pacote:
+
+```
+SIP-<...>/
+├── bagit.txt
+├── manifest-sha256.txt
+└── data/
+    ├── fichaEspelho.json
+    ├── DA-<IdentificadorDocumento>/
+    ├── PR-<IdentificadorProcesso>/
+    └── DS-<IdentificadorDossie>/
+```
+
+---
+
+### 8.6 Ficha Espelho de Transferência
+
+Na raiz da pasta `data/` deve existir obrigatoriamente o arquivo:
+
+```
+fichaEspelho.json
+```
+
+Este arquivo contém os metadados administrativos da transferência arquivística.
+
+Entre os elementos esperados estão:
+
+- órgão produtor;
+- fundo arquivístico;
+- identificação da guia;
+- período documental;
+- código de classificação;
+- quantidade de documentos;
+- data do empacotamento;
+- responsável pelo envio.
+
+O schema deste arquivo será definido em versão posterior deste manual.
+
+---
+
+### 8.7 Composição do Conteúdo do SIP
+
+Na pasta `data/` devem estar presentes as entidades arquivísticas transferidas:
+
+- `DA-<IdentificadorUnico>` para Documento;
+- `PR-<IdentificadorUnico>` para Processo;
+- `DS-<IdentificadorUnico>` para Dossiê.
+
+Cada entidade deve obedecer às regras estruturais definidas nas Seções 7.2, 7.3 e 7.4 deste manual.
+
+---
+
+### 8.8 Validação do SIP
+
+Antes do envio ao RDC-Arq, o pacote deve permitir:
+
+- validação de integridade por verificação de `manifest-sha256.txt`;
+- validação estrutural da organização do pacote;
+- validação dos arquivos JSON conforme seus schemas;
+- verificação da consistência entre metadados e conteúdo.
+
+Recomenda-se que o RDC-Arq registre automaticamente eventos de:
+
+- validação do pacote;
+- ingestão;
+- rejeição ou aceitação do SIP.
+
+---
+
+### 8.9 Pacote de Informação de Representação da Guia
+
+Para cada **Guia de Transferência ou Recolhimento**, deve ser criado um pacote adicional contendo **Informações de Representação** necessárias para interpretação correta dos documentos enviados nos SIPs associados àquela guia.
+
+Este pacote segue o modelo **OAIS**, que define a **Informação de Representação** como o conjunto de informações necessárias para interpretar corretamente os objetos digitais.
+
+Este pacote deve ser criado **uma única vez por guia**.
+
+---
+
+### 8.9.1 Padrão de Empacotamento
+
+O pacote também deve utilizar o padrão **BagIt**.
+
+Estrutura:
+
+```
+<bag-root>/
+├── bagit.txt
+├── manifest-<algoritmo>.txt
+└── data/
+    └── (informações de representação)
+```
+
+---
+
+### 8.9.2 Nomeação do Pacote
+
+O nome do pacote deve seguir o padrão:
+
+```
+SIP-IR-<CODEARQ>-<NOME_DO_FUNDO>-<ID_GUIA>
+```
+
+Exemplo:
+
+```
+SIP-IR-AN-MINISTERIO_DA_JUSTICA-GT2026
+```
+
+---
+
+### 8.9.3 Estrutura do Pacote
+
+Estrutura recomendada:
+
+```
+SIP-IR-<...>/
+├── bagit.txt
+├── manifest-sha256.txt
+└── data/
+    ├── representacao.json
+    ├── fontes/
+    ├── softwares/
+    └── documentacao/
+```
+
+---
+
+### 8.9.4 Conteúdo do Pacote
+
+O arquivo principal é:
+
+```
+representacao.json
+```
+
+Este arquivo deve descrever os recursos técnicos necessários para interpretação dos documentos.
+
+Exemplos de informação de representação:
+
+- fontes tipográficas utilizadas;
+- especificações de formatos;
+- softwares necessários para leitura;
+- dependências técnicas;
+- documentação técnica de formatos ou sistemas produtores.
+
+---
+
+### 8.9.5 Relação com os SIPs
+
+Os SIPs de conteúdo associados à mesma guia devem referenciar o pacote **SIP-IR** por meio de metadados no arquivo:
+
+```
+fichaEspelho.json
+```
+
+Isso permite que o RDC-Arq associe automaticamente os SIPs às informações de representação necessárias para interpretação dos objetos digitais.
