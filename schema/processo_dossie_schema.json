@@ -27,7 +27,7 @@
     },
     "earqProcessoStatus": {
       "type": "string",
-      "enum": ["tramitando", "sobrestado", "arquivado"]  # ver dominio
+      "enum": ["tramitando", "sobrestado", "arquivado"]
     },
     "earqProcessoAutor": {
       "type": "array",

@@ -59,8 +59,8 @@
 
     "earqDocumentoGenero": {
       "type": "string",
-      "enum": ["textual", "audiovisual", "cartográfico", "iconográfico", "multimídia", "micrográfico", "sonoro", "tridimensional"] 
-    }, # precisa atualizar o dominio do genero, principalmente para acertar a confusão quanto aos generos inexistentes digital e eletronico
+      "enum": ["textual", "audiovisual", "filmográfico","cartográfico", "iconográfico", "fonográfico", "tridimensional"] 
+    }, 
     "earqDocumentoEspecie": { "type": "string" },
     "earqDocumentoTipo": { "type": "string" },
     "dc.language": {

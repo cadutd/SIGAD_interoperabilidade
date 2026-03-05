@@ -267,13 +267,13 @@ Abaixo, para cada schema: **finalidade, campos, tipo, obrigatoriedade, valores c
 | `earqComponenteDataCriacao` | `date` | Não |  | Data de criação. |
 | `earqComponenteNivelComposicao` | `integer (enum)` | Não | `0` ou `1` | Nível de composição (precisa semântica explícita no padrão). |
 | `earqComponenteInibidor` | `Inibidor` (`$ref`) | Não |  |  |
-| `earqComponenteFormato` | `Formato` (`$ref`) | Não |  | É Altamente recomendado o preenchimento deste metadado quando o formato é conhecido, pois ele permite mapaer quais softwares são capazes de visualizar a informação do componente |
+| `earqComponenteFormato` | `Formato` (`$ref`) | Não |  | É Altamente desejavel o preenchimento deste metadado quando o formato é conhecido, pois ele permite mapaer quais softwares são capazes de visualizar a informação do componente |
 | `earqComponenteLocalizacao` | `Localização` (`$ref`) | Não |  |  |
 | `earqComponenteSuporte` | `string (enum)` | Não | inclui `HD`, `CD-ROM`, `DVD`, `PAPEL`, etc. | Suporte físico/lógico. |
 | `earqComponenteSoftwareLeitura` | `Software` (`$ref`) | Não |  |  |
 | `earqComponenteHardware` | `Hardware` (`$ref`) | Não |  |  |
 | `earqComponenteOutrasDependencias[]` | `Dependência` (`$ref`) | Não |  |  |
-| `earqComponenteRelacionamentos[]` | `Relacionamento` (`$ref`) | Não |  | Alguns compoentes estabelcem relações com outros compoentes, a exemplo um componete pode ser parte de outra, aprofundando esse exemplo um comoente que represernta um arquivo de folha de estilos "CSS" é relacionado com o compoente que presenta um arquivo html. É Altamente recomendado o preenchimento deste metadado.   |
+| `earqComponenteRelacionamentos[]` | `Relacionamento` (`$ref`) | Não |  | Alguns compoentes estabelecem relações com outros componentes, a exemplo um componente pode ser parte de outro, aprofundando esse exemplo um componente que representa um arquivo de folha de estilos "CSS" é relacionado com o componente que representa um arquivo html. É Altamente desejavel o preenchimento deste metadado.   |
 | `earqComponenteFixidade` | `Fixidade` (`$ref`) | Não |  | Hash do componente. |
 | `earqComponenteAssinaturas[]` | `Assinatura` (`$ref`) | Não |  | Assinaturas associadas. |
 | `earqEventos[]` | `Evento` (`$ref`) | Não |  | Trilha de eventos do componente. |
@@ -805,7 +805,7 @@ O pacote de trâmite:
 Após o recebimento, o órgão destinatário poderá:
 
 - manter o pacote como evidência do trâmite;
-- desmembrar o conteúdo para ingestão em repositório;
+- desmembrar o conteúdo para admissão em repositório;
 - gerar novo pacote para trâmite subsequente.
 
 
@@ -821,10 +821,10 @@ O empacotamento descrito nesta seção corresponde à criação de um **SIP (Sub
 O objetivo é:
 
 - garantir interoperabilidade entre sistemas produtores e o RDC-Arq;
-- assegurar integridade e autenticidade da informação transferida;
-- permitir validação automatizada do pacote de ingestão;
-- manter rastreabilidade da transferência arquivística;
-- facilitar processos de ingestão automatizada no repositório.
+- assegurar autenticidade (integridade e identidade) da informação transferida;
+- permitir validação automatizada do pacote de admissão;
+- manter rastreabilidade da transferência ou recolhimento;
+- facilitar processos de admissão automatizada no repositório.
 
 ---
 
@@ -836,11 +836,11 @@ O modelo define três tipos principais de pacotes de informação:
 
 | Tipo de Pacote | Função |
 |---|---|
-| SIP — Submission Information Package | Pacote submetido ao repositório para ingestão |
+| SIP — Submission Information Package | Pacote submetido ao repositório para admissão |
 | AIP — Archival Information Package | Pacote armazenado e preservado pelo repositório |
 | DIP — Dissemination Information Package | Pacote gerado para acesso ao usuário |
 
-Neste manual, esta seção trata da criação do **SIP**, que é o pacote enviado ao RDC-Arq durante processos de transferência arquivística, recolhimento ou ingestão programada de documentos digitais.
+Neste manual, esta seção trata da criação do **SIP**, que é o pacote enviado ao RDC-Arq durante processos de transferência arquivística, recolhimento ou admissão programada de documentos digitais.
 
 ---
 
@@ -877,7 +877,7 @@ Onde:
 |---|---|
 | CODEARQ | Código do cadastro nacional de entidades custoriadoras de acervos do arquivo responsável pela custódia |
 | NOME_DO_FUNDO | Nome do fundo arquivístico, a ser informado pelo Arquivo de destino do pacote |
-| ID_GUIA | Identificador da guia de transferência ou recolhimento |
+| ID_GUIA | Identificador da guia de transmissão (transfêrencia ou recolhimento) |
 | CODIGO_CLASSIFICACAO_COMPLETO | Código de classificação completo |
 | DATAHORAEMPACOTAMENTO | Data e hora de criação do pacote |
 
@@ -891,7 +891,7 @@ Regras:
 Exemplo:
 
 ```
-SIP-AN-MINISTERIO_DA_JUSTICA-GT2026-04-02_01_03-20260402T143500
+SIP-BRANRJ-MINISTERIO_DA_JUSTICA-GT022-001_130_131-20260402T143500
 ```
 
 ---
@@ -962,7 +962,7 @@ Antes do envio ao RDC-Arq, o pacote deve permitir:
 Recomenda-se que o RDC-Arq registre automaticamente eventos de:
 
 - validação do pacote;
-- ingestão;
+- admissão;
 - rejeição ou aceitação do SIP.
 
 ---
@@ -1004,7 +1004,7 @@ SIP-IR-<CODEARQ>-<NOME_DO_FUNDO>-<ID_GUIA>
 Exemplo:
 
 ```
-SIP-IR-AN-MINISTERIO_DA_JUSTICA-GT2026
+SIP-IR-AN-MINISTERIO_DA_JUSTICA-GT002
 ```
 
 ---
