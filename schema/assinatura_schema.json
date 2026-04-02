@@ -2,30 +2,82 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Assinatura",
   "type": "object",
+    "required": ["codificacao","signatario","metodo","valor"],
   "properties": {
-    "codificacao": {
-      "type": "string"
-    },
     "signatario": {
       "$ref": "agente_schema.json"
     },
+    "codificacao": {
+      "type": "string",
+      "description": "Codificação do valor da assinatura ou do artefato associado, ex.: base64, binário, hexadecimal."
+    },
+    "dataHoraAssinatura": {
+      "type": "string",
+      "format": "date-time"
+    },        
+    "tipoAssintanura": {
+      "type": "string",
+      "description": "Tipo de assinatura conforme Lei 14.063/2020",
+      "enum": [
+        "SIMPLES",
+        "AVANCADA",
+        "QUALIFICADA"
+      ]
+    },
     "metodo": {
-      "type": "string"
+      "type": "string",
+      "description": "Método criptográfico ou mecanismo de autenticação. Ex.: login+senha, CMS, PKCS#7, CAdES."
     },
-    "valor": {
-      "type": "string"
+    "assinaturaUsuarioSenha": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "identificadorUsuario": {
+          "type": "string",
+          "description": "identificador unico usando pelo sistema de autenticação para identificar o usuário"
+        },
+        "sistemaAutenticacao": {
+          "type": "string",
+          "description": "Sistema informatizado que conhecia a indentidade do usuário e que fez a autenticação no momento da assinatura. Ex.: SEI, LDAP, AD, KEYCLOACK"
+        },
+        "fatorAutenticacao": {
+          "type": "string",
+          "enum": ["senha", "senha_hash", "sessao_autenticada", "outro"]
+        },
+        "checksumConteudo": {
+          "$ref": "fixidade_schema.json"
+        }
+      },
+      "required": ["identificadorUsuario", "sistemaAutenticacao","checksumConteudo"]
     },
-    "regrasValidacao": {
-      "type": "string"
-    },
-    "chave": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "codificacao",
-    "signatario",
-    "metodo",
-    "valor"
-  ]
+    "assinaturaCertificadoDigital": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tipoPadrao": {
+          "type": "string",
+          "enum": ["PKCS#7", "CMS", "CAdES", "PAdES", "XAdES", "XMLDSig", "outro"]
+        },
+        "tipoCertificado":{
+          "type": "string",
+          "description": "Tipo de assinatura conforme Lei 14.063/2020, Usar AVANCADO para certificados ICP-Brasil",
+          "enum": ["QUALIFICADO", "AVANCADO", "OUTRO"]
+        },
+        "formatoAssinatura": {
+          "type": "string",
+          "enum": ["EMBUTIDA", "DESTACADA"]
+        },
+        "earqComponenteIdDestacado": {
+          "type": "string",
+          "description": "identificador que representa o com componente do arquivo de assinatura destacada"
+        },
+        "referenciaValidacao": {
+          "type": "string",
+          "description": "referencia para a validação da assinatura. LCR - Lista de Certificados Revogados, RESPOSTA OCSP ou outro forma.",
+          "enum": ["LCR","OCSP","OUTRO"]
+        }
+      }  
+    }    
+
+  }
 }
