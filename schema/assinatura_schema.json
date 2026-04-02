@@ -7,7 +7,7 @@
     "signatario": {
       "$ref": "agente_schema.json"
     },
-    "codificacao": {
+    "codificacao": {  // remover
       "type": "string",
       "description": "Codificação do valor da assinatura ou do artefato associado, ex.: base64, binário, hexadecimal."
     },
@@ -15,7 +15,7 @@
       "type": "string",
       "format": "date-time"
     },        
-    "tipoAssintanura": {
+    "tipoAssinatura": {
       "type": "string",
       "description": "Tipo de assinatura conforme Lei 14.063/2020",
       "enum": [
@@ -23,10 +23,6 @@
         "AVANCADA",
         "QUALIFICADA"
       ]
-    },
-    "metodo": {
-      "type": "string",
-      "description": "Método criptográfico ou mecanismo de autenticação. Ex.: login+senha, CMS, PKCS#7, CAdES."
     },
     "assinaturaUsuarioSenha": {
       "type": "object",
@@ -56,12 +52,7 @@
       "properties": {
         "tipoPadrao": {
           "type": "string",
-          "enum": ["PKCS#7", "CMS", "CAdES", "PAdES", "XAdES", "XMLDSig", "outro"]
-        },
-        "tipoCertificado":{
-          "type": "string",
-          "description": "Tipo de assinatura conforme Lei 14.063/2020, Usar AVANCADO para certificados ICP-Brasil",
-          "enum": ["QUALIFICADO", "AVANCADO", "OUTRO"]
+          "enum": ["PKCS#7", "CMS", "CAdES", "PAdES", "XAdES", "XMLDSig", "OUTRO"]
         },
         "formatoAssinatura": {
           "type": "string",
@@ -69,7 +60,7 @@
         },
         "earqComponenteIdDestacado": {
           "type": "string",
-          "description": "identificador que representa o com componente do arquivo de assinatura destacada"
+          "description": "identificador que representa o componente do arquivo de assinatura destacada"
         },
         "referenciaValidacao": {
           "type": "string",

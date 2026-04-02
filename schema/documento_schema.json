@@ -59,7 +59,7 @@
 
     "earqDocumentoGenero": {
       "type": "string",
-      "enum": ["textual", "audiovisual", "filmográfico","cartográfico", "iconográfico", "fonográfico", "tridimensional"] 
+      "enum": ["TEXTUAL", "CARTOGRAFICO", "ICONOGRAFICO", "SONORO", "AUDIOVISUAL", "TRIDIMENSIONAL"]    
     }, 
     "earqDocumentoEspecie": { "type": "string" },
     "earqDocumentoTipo": { "type": "string" },
