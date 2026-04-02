@@ -265,11 +265,11 @@ Abaixo, para cada schema: **finalidade, campos, tipo, obrigatoriedade, valores c
 | `earqComponenteUnidadeMedidaTamanho` | `string (enum)` | Não | `KB` `MB` `GB` `TB` `CAIXA` `METRO LINEAR` | Mistura unidades digitais e físicas (ok, mas convém definir regra de uso). |
 | `earqComponenteSoftwareCriacao` | `Software` (`$ref`) | Não |  | Software de criação. |
 | `earqComponenteDataCriacao` | `date` | Não |  | Data de criação. |
-| `earqComponenteNivelComposicao` | `integer (enum)` | Não | `0` ou `1` | Nível de composição (precisa semântica explícita no padrão). |
+| `earqComponenteNivelComposicao` | `integer (enum)` | Não | `0` ou `1` | Informação sobre se o componente digital está sujeito a um ou mais processos de  compressão, criptografia ou empacotamento, bem como qual é esse nível. '0' quando o componente não foi submetido a compressão, '1' se foi submetido a compresssão |
 | `earqComponenteInibidor` | `Inibidor` (`$ref`) | Não |  |  |
 | `earqComponenteFormato` | `Formato` (`$ref`) | Não |  | É Altamente desejavel o preenchimento deste metadado quando o formato é conhecido, pois ele permite mapaer quais softwares são capazes de visualizar a informação do componente |
 | `earqComponenteLocalizacao` | `Localização` (`$ref`) | Não |  |  |
-| `earqComponenteSuporte` | `string (enum)` | Não | inclui `HD`, `CD-ROM`, `DVD`, `PAPEL`, etc. | Suporte físico/lógico. |
+| `earqComponenteSuporte` | `string (enum)` | Não | inclui `HD`, `CD-ROM`, `DVD`, `PAPEL`, etc. | Tipo do Suporte em que o componente esta armazenado. |
 | `earqComponenteSoftwareLeitura` | `Software` (`$ref`) | Não |  |  |
 | `earqComponenteHardware` | `Hardware` (`$ref`) | Não |  |  |
 | `earqComponenteOutrasDependencias[]` | `Dependência` (`$ref`) | Não |  |  |
