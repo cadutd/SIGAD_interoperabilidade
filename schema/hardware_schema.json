@@ -12,5 +12,8 @@
     "outrasInformacoes": {
       "type": "string"
     }
-  }
+  },
+    "required": [
+    "nome"
+  ]
 }

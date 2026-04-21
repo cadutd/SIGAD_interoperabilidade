@@ -86,12 +86,12 @@
           "EarqEventoAgente": {
             "type": "object",
             "properties": {
-              "tipo": {
+              "agentType": {
                 "const": "software"
               }
             },
             "required": [
-              "tipo"
+              "agentType"
             ]
           }
         },

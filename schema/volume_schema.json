@@ -9,18 +9,12 @@
     "earqVolumeQtFolha": { "type": "integer", "minimum": 1 },    
     "earqDataAbertura": {"type": "string", "format": "date"},
     "earqDataEncerramento": {"type": "string", "format": "date"},
-    "earqVolumeLocalizacao": {
-      "type": "object",
-      "properties": {
-        "enderecoFisico": { "type": "string" },
-        "siglaUnidade": { "type": "string" },
-        "observacao": { "type": "string" }
-      }
-    },
+    "earqVolumeLocalizacao": { "$ref": "localizacao_schema.json" },
     "earqDocumentos": {
       "type": "array",
       "description": "Lista ordenada de documentos pertencentes ao volume, com ordem de apresentação.",
       "minItems": 1,
+      "uniqueItems": true,
       "items": {
         "type": "object",
         "additionalProperties": false,

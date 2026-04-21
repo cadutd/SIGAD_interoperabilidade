@@ -2,14 +2,10 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Assinatura",
   "type": "object",
-    "required": ["codificacao","signatario","metodo","valor"],
+  "required": ["signatario", "tipoAssinatura", "dataHoraAssinatura"],
   "properties": {
     "signatario": {
       "$ref": "agente_schema.json"
-    },
-    "codificacao": {  // remover
-      "type": "string",
-      "description": "Codificação do valor da assinatura ou do artefato associado, ex.: base64, binário, hexadecimal."
     },
     "dataHoraAssinatura": {
       "type": "string",
@@ -70,5 +66,48 @@
       }  
     }    
 
-  }
+  },
+    "oneOf": [
+    {
+      "required": [
+        "assinaturaUsuarioSenha"
+      ]
+    },
+    {
+      "required": [
+        "assinaturaCertificadoDigital"
+      ]
+    }
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "assinaturaCertificadoDigital": {
+            "type": "object",
+            "properties": {
+              "formatoAssinatura": {
+                "const": "DESTACADA"
+              }
+            },
+            "required": [
+              "formatoAssinatura"
+            ]
+          }
+        },
+        "required": [
+          "assinaturaCertificadoDigital"
+        ]
+      },
+      "then": {
+        "properties": {
+          "assinaturaCertificadoDigital": {
+            "required": [
+              "earqComponenteIdDestacado"
+            ]
+          }
+        }
+      }
+    }
+  ]  
 }

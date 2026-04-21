@@ -3,7 +3,7 @@
   "title": "Processo_Dossie",
   "type": "object",
     "earqProcessoAnexo": { "type": "boolean" }, 
-  "required": ["EarqProcessoId", "dc.date.issued", "earqProcessoMeio", "earqProcessoStatus", "earqProcessoVersao", "earqProcessoAutor", "earqClasseId", "earqNivelDeAcessoId", "earqProcessoIndicacaoAnotacao"  ],
+  "required": ["earqProcessoId", "dc.date.issued", "earqProcessoMeio", "earqProcessoStatus", "earqProcessoAutor", "earqClasseId", "earqNivelDeAcessoId", "earqProcessoIndicacaoAnotacao"  ],
   "properties": {
     "earqProcessoId": { "type": "string" },
     "dc.relation": {
@@ -11,8 +11,8 @@
       "items": {
         "type": "object",
         "properties": {
-          "EarqProcessoId": { "type": "string" },
-          "EarqDocumentoId": { "type": "string" },
+          "earqProcessoId": { "type": "string" },
+          "earqDocumentoId": { "type": "string" },
           "DcTitle": { "type": "string" }
         }
       }
@@ -55,8 +55,7 @@
       "type": "string",
       "pattern": "^[a-z]{3}$" 
     },
-    "earqProcessoQtFolha": { "type": "integer", "minimum": 1 },
-    "earqProcessoAnexo": { "type": "boolean" },     
+    "earqProcessoQtFolha": { "type": "integer", "minimum": 1 },         
     "earqClasseId": {
       "type": "object",
       "properties": {
@@ -69,8 +68,9 @@
     "earqProcessoDestinacao": {
       "type": "string",
       "enum": ["transferência", "eliminação", "recolhimento"]
-    },
-    "earqProcessoPrazoDeGuarda": { "type": "string", "format": "date" },
+    },   
+    "earqProcessoPrazoDeGuarda": { "type": "string", 
+                                    "description": "Indicação do prazo estabelecido em tabela de temporalidade e destinação de documentos para o cumprimento da destinação. Deve ser preenchido com a quantidade de meses que o processo deve ser guardado" },     
     "earqProcessoLocalizacao": {
       "type": "object",
       "properties": {

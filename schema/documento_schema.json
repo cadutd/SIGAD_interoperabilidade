@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Documento",
   "type": "object",    
-  "required": ["EarqDocumentoId", "DcTitle", "dc.date.issued", "earqDocumentoMeio", "earqDocumentoStatus", "earqDocumentoVersao", "earqDocumentoAutor", "earqDocumentoDestinatario", "earqDocumentoRedator", "earqClasseId", "earqNivelDeAcessoId", "earqDocumentoIndicacaoAnotacao"  ],
+  "required": ["earqDocumentoId", "DcTitle", "dc.date.issued", "earqDocumentoMeio", "earqDocumentoStatus", "earqDocumentoVersao", "earqDocumentoAutor", "earqDocumentoDestinatario", "earqDocumentoRedator", "earqClasseId", "earqNivelDeAcessoId", "earqDocumentoIndicacaoAnotacao"  ],
   "properties": {
     "earqDocumentoId": { "type": "string" },
     "DcTitle": { "type": "string" },
@@ -16,8 +16,8 @@
       "items": {
         "type": "object",
         "properties": {
-          "EarqDocumentoId": { "type": "string" },
-          "EarqProcessoId": { "type": "string" },
+          "earqDocumentoId": { "type": "string" },
+          "earqProcessoId": { "type": "string" },
           "DcTitle": { "type": "string" }
         }
       }
@@ -82,7 +82,8 @@
       "type": "string",
       "enum": ["transferência", "eliminação", "recolhimento"]
     },
-    "earqDocumentoPrazoDeGuarda": { "type": "string", "format": "date" }, 
+    "earqDocumentoPrazoDeGuarda": { "type": "string", 
+                                    "description": "Indicação do prazo estabelecido em tabela de temporalidade e destinação de documentos para o cumprimento da destinação. Deve ser preenchido com a quantidade de meses que o documento deve ser guardado" }, 
     "earqDocumentoLocalizacao": {
       "type": "object",
       "properties": {

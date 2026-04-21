@@ -74,9 +74,9 @@
     }		
   },
   "required": [
-    "EarqAgenteId",
-    "EarqAgenteNome",
-    "EarqAgenteStatus",
+    "earqAgenteId",
+    "earqAgenteNome",
+    "earqAgenteStatus",
     "agentType"
   ],
   "allOf": [
