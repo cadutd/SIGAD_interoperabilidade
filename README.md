@@ -1,58 +1,99 @@
 # Manual de Interoperabilidade de Documentos Arquivísticos
 
 ## Sumário
-1. [Visão geral do padrão](#1-visão-geral-do-padrão)  
-   1.1 [Objetivo](#11-objetivo)  
-   1.2 [Estrutura de referências ($ref)](#12-estrutura-de-referências-ref)  
-2. [Regras e convenções de preenchimento](#2-regras-e-convenções-de-preenchimento)  
-   2.1 [Tipos e formatos](#21-tipos-e-formatos)  
-   2.2 [Campos obrigatórios](#22-campos-obrigatórios)  
-   2.3 [“Eventos” como trilha de auditoria](#23-eventos-como-trilha-de-auditoria)  
-3. [Pontos de atenção (importante para a versão em desenvolvimento)](#3-pontos-de-atenção-importante-para-a-versão-em-desenvolvimento)  
-4. [Dicionário de dados por schema](#4-dicionário-de-dados-por-schema)  
-   4.1 [`dependencia_schema.json` — Dependência](#41-dependencia_schemajson--dependência)  
-   4.2 [`assinatura_schema.json` — Assinatura](#42-assinatura_schemajson--assinatura)  
-   4.3 [`agente_schema.json` — Agente](#43-agente_schemajson--agente)  
-   4.4 [`evento_schema.json` — Evento](#44-evento_schemajson--evento)  
-   4.5 [`fixidade_schema.json` — Fixidade](#45-fixidade_schemajson--fixidade)  
-   4.6 [`localizacao_schema.json` — Localização](#46-localizacao_schemajson--localização)  
-   4.7 [`relacionamento_schema.json` — RelacionamentoComponente](#47-relacionamento_schemajson--relacionamentocomponente)  
-   4.8 [`inibidor_schema.json` — Inibidor](#48-inibidor_schemajson--inibidor)  
-   4.9 [`software_schema.json` — Software](#49-software_schemajson--software)  
-   4.10 [`hardware_schema.json` — Hardware](#410-hardware_schemajson--hardware)  
-   4.11 [`formato_schema.json` — Formato](#411-formato_schemajson--formato)  
-   4.12 [`componente_schema.json` — Componente](#412-componente_schemajson--componente)  
-   4.13 [`documento_schema.json` — Documento](#413-documento_schemajson--documento)  
-5. [Exemplo mínimo de uso (modelo mental)](#5-exemplo-mínimo-de-uso-modelo-mental)  
-   5.1 [Documento com 1 componente e 2 eventos (exemplo conceitual)](#51-documento-com-1-componente-e-2-eventos-exemplo-conceitual)  
-6. [Checklist de implementação (para quem vai produzir/consumir JSON)](#6-checklist-de-implementação-para-quem-vai-produzirconsumir-json)
-7. [Padrão de Armazenamento e Trâmite em Sistema de Arquivos](#7-padrao-de-armazenamento-e-tramite-em-sistema-de-arquivos)  
-   7.1 [Objetivo](#71-objetivo)  
-   7.2 [Princípios Gerais](#72-principios-gerais)  
-   7.3 [Estrutura de Diretórios Recomendada](#73-estrutura-de-diretorios-recomendada)  
-   7.4 [Convenções de Nomeação](#74-convencoes-de-nomeacao)  
-   7.5 [Empacotamento para Trâmite](#75-empacotamento-para-tramite)  
-8. [Empacotamento para Envio a RDC-Arq (SIP)](#8-empacotamento-para-envio-a-rdc-arq-sip)  
-   8.1 [Objetivo](#81-objetivo)  
-   8.2 [Modelo OAIS e Pacotes de Informação](#82-modelo-oais-e-pacotes-de-informacao)  
-   8.3 [Padrão de Empacotamento](#83-padrao-de-empacotamento)  
-   8.4 [Nomeação do Pacote SIP](#84-nomeacao-do-pacote-sip)  
-   8.5 [Estrutura Interna do SIP](#85-estrutura-interna-do-sip)  
-   8.6 [Ficha Espelho de Transferência](#86-ficha-espelho-de-transferencia)  
-   8.7 [Composição do Conteúdo do SIP](#87-composicao-do-conteudo-do-sip)  
-   8.8 [Validação do SIP](#88-validacao-do-sip)  
-   8.9 [Pacote de Informação de Representação da Guia](#89-pacote-de-informacao-de-representacao-da-guia)  
-      8.9.1 [Padrão de Empacotamento](#891-padrao-de-empacotamento)  
-      8.9.2 [Nomeação do Pacote](#892-nomeacao-do-pacote)  
-      8.9.3 [Estrutura do Pacote](#893-estrutura-do-pacote)  
-      8.9.4 [Conteúdo do Pacote](#894-conteudo-do-pacote)  
-      8.9.5 [Relação com os SIPs](#895-relacao-com-os-sips)  
+- [Manual de Interoperabilidade de Documentos Arquivísticos](#manual-de-interoperabilidade-de-documentos-arquivísticos)
+  - [Sumário](#sumário)
+  - [1) Introdução](#1-introdução)
+  - [2) Visão geral do padrão](#2-visão-geral-do-padrão)
+    - [2.1 Objetivo](#21-objetivo)
+    - [2.2 Estrutura de referências ($ref)](#22-estrutura-de-referências-ref)
+  - [3) Regras e convenções de preenchimento](#3-regras-e-convenções-de-preenchimento)
+    - [3.1 Tipos e formatos](#31-tipos-e-formatos)
+    - [3.2 Campos obrigatórios](#32-campos-obrigatórios)
+    - [3.3 “Eventos” como trilha de auditoria](#33-eventos-como-trilha-de-auditoria)
+  - [4) Dicionário de dados por schema](#4-dicionário-de-dados-por-schema)
+    - [4.1 `documento_schema.json` — Documento](#41-documento_schemajson--documento)
+    - [4.2 `componente_schema.json` — Componente](#42-componente_schemajson--componente)
+    - [4.3 `processo_dossie_schema.json` — Processo / Dossiê](#43-processo_dossie_schemajson--processo--dossiê)
+    - [4.4 `volume_schema.json` — Volume](#44-volume_schemajson--volume)
+    - [4.5 `agente_schema.json` — Agente](#45-agente_schemajson--agente)
+    - [4.6 `evento_schema.json` — Evento](#46-evento_schemajson--evento)
+    - [4.7 `assinatura_schema.json` — Assinatura](#47-assinatura_schemajson--assinatura)
+    - [4.8 `fixidade_schema.json` — Fixidade](#48-fixidade_schemajson--fixidade)
+    - [4.9 `dependencia_schema.json` — Dependência](#49-dependencia_schemajson--dependência)
+    - [4.10 `hardware_schema.json` — Hardware](#410-hardware_schemajson--hardware)
+    - [4.11 `software_schema.json` — Software](#411-software_schemajson--software)
+    - [4.12 `inibidor_schema.json` — Inibidor](#412-inibidor_schemajson--inibidor)
+    - [4.13 `formato_schema.json` — Formato](#413-formato_schemajson--formato)
+    - [4.14 `localizacao_schema.json` — Localização](#414-localizacao_schemajson--localização)
+    - [4.15 `relacionamento_schema.json` — Relacionamento](#415-relacionamento_schemajson--relacionamento)
+  - [5) Exemplo mínimo de uso (modelo mental)](#5-exemplo-mínimo-de-uso-modelo-mental)
+    - [5.1 Documento com 1 componente e 2 eventos (exemplo conceitual)](#51-documento-com-1-componente-e-2-eventos-exemplo-conceitual)
+  - [6) Checklist de implementação (para quem vai produzir/consumir JSON)](#6-checklist-de-implementação-para-quem-vai-produzirconsumir-json)
+- [7) Padrão de Armazenamento em Sistemas de Arquivos](#7-padrão-de-armazenamento-em-sistemas-de-arquivos)
+  - [7.1 Objetivo](#71-objetivo)
+  - [7.2 Princípios Gerais](#72-princípios-gerais)
+    - [7.2.1 Hierarquia Arquivística](#721-hierarquia-arquivística)
+    - [7.2.2 Identificador como Elemento Estruturante](#722-identificador-como-elemento-estruturante)
+    - [7.2.3 Separação entre Metadados e Conteúdo Binário](#723-separação-entre-metadados-e-conteúdo-binário)
+    - [7.2.4 Imutabilidade Lógica](#724-imutabilidade-lógica)
+  - [7.3 Estrutura de Diretórios Recomendada](#73-estrutura-de-diretórios-recomendada)
+  - [7.3.1 Estrutura Base](#731-estrutura-base)
+    - [a) Documento (DA)](#a-documento-da)
+    - [b) Processo (PR)](#b-processo-pr)
+    - [c) Dossiê (DS)](#c-dossiê-ds)
+  - [7.4 Convenções de Nomeação](#74-convenções-de-nomeação)
+    - [7.4.1 Nomeação de Diretórios Raiz](#741-nomeação-de-diretórios-raiz)
+    - [7.4.2 Nomeação de Arquivos de Metadados](#742-nomeação-de-arquivos-de-metadados)
+    - [7.4.3 Nomeação de Componentes Digitais](#743-nomeação-de-componentes-digitais)
+    - [7.4.4 Sensibilidade a Maiúsculas e Minúsculas](#744-sensibilidade-a-maiúsculas-e-minúsculas)
+    - [7.4.5 Proibições](#745-proibições)
+    - [7.4.6 Compatibilidade com Preservação Digital](#746-compatibilidade-com-preservação-digital)
+  - [7.5 Empacotamento para Trâmite](#75-empacotamento-para-trâmite)
+    - [7.5.1 Objetivo](#751-objetivo)
+    - [7.5.2 Padrão BagIt](#752-padrão-bagit)
+      - [Estrutura Geral do BagIt](#estrutura-geral-do-bagit)
+      - [Arquivos Obrigatórios](#arquivos-obrigatórios)
+      - [Arquivos Opcionais](#arquivos-opcionais)
+    - [7.5.3 Estrutura do Pacote de Trâmite](#753-estrutura-do-pacote-de-trâmite)
+    - [7.5.4 Estrutura Interna do Bag](#754-estrutura-interna-do-bag)
+      - [Regras de Composição](#regras-de-composição)
+    - [7.5.5 Integridade e Validação](#755-integridade-e-validação)
+    - [7.5.6 Considerações de Preservação](#756-considerações-de-preservação)
+  - [8 Empacotamento para Envio a RDC-Arq (SIP)](#8-empacotamento-para-envio-a-rdc-arq-sip)
+    - [8.1 Objetivo](#81-objetivo)
+    - [8.2 Modelo OAIS e Pacotes de Informação](#82-modelo-oais-e-pacotes-de-informação)
+    - [8.3 Padrão de Empacotamento](#83-padrão-de-empacotamento)
+    - [8.4 Nomeação do Pacote SIP](#84-nomeação-do-pacote-sip)
+    - [8.5 Estrutura Interna do SIP](#85-estrutura-interna-do-sip)
+    - [8.6 Ficha Espelho de Transferência](#86-ficha-espelho-de-transferência)
+    - [8.7 Composição do Conteúdo do SIP](#87-composição-do-conteúdo-do-sip)
+    - [8.8 Validação do SIP](#88-validação-do-sip)
+    - [8.9 Pacote de Informação de Representação da Guia](#89-pacote-de-informação-de-representação-da-guia)
+    - [8.9.1 Padrão de Empacotamento](#891-padrão-de-empacotamento)
+    - [8.9.2 Nomeação do Pacote](#892-nomeação-do-pacote)
+    - [8.9.3 Estrutura do Pacote](#893-estrutura-do-pacote)
+    - [8.9.4 Conteúdo do Pacote](#894-conteúdo-do-pacote)
+    - [8.9.5 Relação com os SIPs](#895-relação-com-os-sips)
+  - [9. Considerações Finais](#9-considerações-finais)
 
 ---
 
-## 1) Visão geral do padrão
+## 1) Introdução
 
-### 1.1 Objetivo
+A transformação digital da administração pública e das organizações privadas ampliou de forma significativa a produção, tramitação, armazenamento e preservação de documentos em meio digital. Processos administrativos eletrônicos, sistemas corporativos, plataformas colaborativas e aplicações especializadas passaram a registrar atividades, decisões e evidências institucionais em formatos digitais, convertendo esses registros em parte essencial do patrimônio arquivístico contemporâneo. Nesse contexto, garantir a autenticidade, a integridade, a confiabilidade, a acessibilidade e a preservação de longo prazo desses documentos tornou-se um desafio estratégico para a gestão documental e para a governança da informação.
+
+Embora existam iniciativas consolidadas no Brasil voltadas à gestão e preservação de documentos arquivísticos digitais — como o **e-ARQ Brasil**, a **NOBRADE**, as diretrizes para **RDC-Arq** e outros referenciais normativos — ainda persistem dificuldades práticas relacionadas à interoperabilidade entre sistemas produtores, tramitadores, custodiais e preservadores de documentos digitais. Em muitos cenários, diferentes soluções tecnológicas utilizam estruturas de dados incompatíveis, metadados heterogêneos e modelos próprios de empacotamento, o que dificulta transferências, recolhimentos, migrações tecnológicas e ações coordenadas de preservação digital.
+
+Este **Manual de Interoperabilidade de Documentos Arquivísticos Digitais** surge como resposta a esse cenário. Seu propósito é oferecer um modelo técnico comum para representação, troca, armazenamento e encaminhamento de documentos arquivísticos digitais ao longo de todo o seu ciclo de vida. Para isso, o documento estabelece esquemas estruturados em **JSON Schema**, define metadados essenciais, organiza relações entre documentos, componentes digitais, eventos e agentes, e propõe convenções para armazenamento em sistema de arquivos e empacotamento com base em padrões amplamente reconhecidos, como o **BagIt** e o modelo **OAIS**.
+
+A proposta adota uma visão arquivística integrada, na qual o documento digital é compreendido não apenas como um arquivo de computador, mas como uma unidade documental contextualizada por metadados, vínculos orgânicos, histórico de eventos, assinaturas, controles de acesso e requisitos de preservação. Dessa forma, busca-se assegurar que diferentes sistemas possam produzir, interpretar, transferir e custodiar documentos digitais sem perda de significado, contexto ou valor probatório.
+
+Mais do que uma especificação técnica, este manual pretende servir como instrumento de cooperação institucional. Ao favorecer padrões abertos e compartilhados, contribui para a construção de ecossistemas interoperáveis entre órgãos públicos, arquivos permanentes, plataformas de processo eletrônico, sistemas de negócio e repositórios digitais confiáveis. Seu uso pode apoiar tanto iniciativas locais quanto políticas nacionais voltadas à modernização administrativa, à transparência pública, à memória institucional e à preservação do patrimônio documental digital brasileiro.
+
+## 2) Visão geral do padrão
+
+### 2.1 Objetivo
 Os schemas descrevem uma estrutura mínima para representar documentos e processos com metadados de gestão (e-ARQ) e preservação (conceitos alinhados ao PREMIS), especialmente:
 
 - **Documento** como entidade intelectual (metadados descritivos e de contexto).
@@ -60,7 +101,7 @@ Os schemas descrevem uma estrutura mínima para representar documentos e process
 - **Evento** como trilha de ações ocorridas no ciclo de vida (captura, tramitação, assinatura, verificação de fixidez, migração etc.).
 - **Agente** como responsável por eventos e papéis (pessoa, organização, software, hardware).
 
-### 1.2 Estrutura de referências ($ref)
+### 2.2 Estrutura de referências ($ref)
 Os schemas se relacionam por **`$ref`** (referência por arquivo). Exemplos:
 
 - `evento_schema.json` referencia `agente_schema.json` em `EarqEventoAgente`.
@@ -71,21 +112,21 @@ Os schemas se relacionam por **`$ref`** (referência por arquivo). Exemplos:
 
 ---
 
-## 2) Regras e convenções de preenchimento
+## 3) Regras e convenções de preenchimento
 
-### 2.1 Tipos e formatos
+### 3.1 Tipos e formatos
 - `format: date` → data no padrão ISO (ex.: `2026-01-15`).
 - `format: date-time` → data/hora ISO 8601 (ex.: `2026-01-15T10:30:00-03:00`).
 
 > Observação: a aplicação dessas convenções aparece, por exemplo, em `evento_schema.json`.
 
-### 2.2 Campos obrigatórios
+### 3.2 Campos obrigatórios
 Cada schema define uma lista **`required`**. Em interoperabilidade, isso significa:
 
 - O produtor deve garantir a presença dos campos obrigatórios.
 - O consumidor pode rejeitar objetos inválidos (ou registrar inconsistência).
 
-### 2.3 “Eventos” como trilha de auditoria
+### 3.3 “Eventos” como trilha de auditoria
 Tanto **Documento** quanto **Componente** possuem `earqEventos` (lista de **Evento**).
 
 Isso permite modelar:
@@ -97,240 +138,260 @@ Isso permite modelar:
 
 ---
 
-## 3) Pontos de atenção (importante para a versão em desenvolvimento)
-
-Há inconsistências de *case* entre `properties` e `required` em alguns schemas:
-
-- Em **Agente**, os `properties` estão como `earqAgenteId`, `earqAgenteNome` etc., mas o `required` lista `EarqAgenteId`, `EarqAgenteNome`, `EarqAgenteStatus` (com “E” maiúsculo). Isso tende a falhar na validação.
-- Em **Documento**, `required` lista `EarqDocumentoId`, mas em `properties` aparece `earqDocumentoId`.
-
-**Recomendação de padronização (para próxima revisão):**
-- escolher um padrão único (ex.: `camelCase` com prefixo `earq...` e `dc...`) e alinhar `required` aos nomes exatos em `properties`.
-
-Também há regras condicionais (`allOf/if/then`) que parecem referenciar caminhos que não existem do jeito escrito (ex.: condição no Evento olha `EarqEventoAgente.tipo`, mas no schema de Agente o campo é `agentType`).
-
-➡️ Isso merece ajuste para que a regra condicional funcione.
-
----
-
 ## 4) Dicionário de dados por schema
 Abaixo, para cada schema: **finalidade, campos, tipo, obrigatoriedade, valores controlados e observações**.
 
 ---
 
-### 4.1 `dependencia_schema.json` — Dependência
-**Finalidade:** apontar dependências genéricas (ex.: dependência técnica, dependência externa, vínculo a outro recurso).
+### 4.1 `documento_schema.json` — Documento
 
-| Campo | Tipo | Obrigatório | Observações |
-|---|---|---:|---|
-| `tipo` | `string` | Sim | Tipo de dependência (vocabulário ainda aberto). |
-| `id` | `string` | Sim | Identificador da dependência (URI, UUID, código interno). |
-
----
-
-### 4.2 `assinatura_schema.json` — Assinatura
-**Finalidade:** registrar assinatura (digital ou outra forma) associada ao componente.
-
-| Campo | Tipo | Obrigatório | Observações |
-|---|---|---:|---|
-| `codificacao` | `string` | Sim | Ex.: base64, hex, DER etc. |
-| `signatario` | `Agente` (`$ref`) | Sim | Quem assinou. |
-| `metodo` | `string` | Sim | Método/algoritmo (ex.: CMS/PKCS#7, PAdES, etc.). |
-| `valor` | `string` | Sim | Valor/artefato da assinatura (string). |
-| `regrasValidacao` | `string` | Não | Regras ou política de validação. |
-| `chave` | `string` | Não | Chave/certificado/identificador correlato. |
-
----
-
-### 4.3 `agente_schema.json` — Agente
-**Finalidade:** representar pessoa, organização, hardware ou software responsável por ações/eventos. Inclui metadados alinháveis ao PREMIS (`agentType`, `agentVersion`, `agentNote`).
+**Finalidade:** representar o documento arquivístico como entidade intelectual e orgânica, reunindo metadados de identificação, contexto, classificação, destinação, acesso, autoria, relacionamento, componentes e eventos associados ao longo do ciclo de vida.
 
 | Campo | Tipo | Obrigatório | Valores/Regra | Observações |
 |---|---|---:|---|---|
-| `earqAgenteId` | `string` | (Sim, intenção do schema) |  | Identificador único (UUID/URI/código). |
-| `earqAgenteNome` | `string` | (Sim, intenção do schema) |  | Nome do agente. |
-| `earqFormaDoNome` | `string` | Não |  | Forma do nome (completo/abreviado etc.). |
-| `earqAgenteStatus` | `string` | (Sim, intenção do schema) | `Ativo` \| `Inativo` | Situação do agente. |
-| `agentType` | `string` | Sim | `Pessoa` \| `Organização` \| `hardware` \| `software` | Tipo do agente. |
-| `agentVersion` | `string` | Condicional | obrigatório se `agentType = software` ou `hardware` | Versão do agente técnico. |
-| `agentNote` | `string` | Não |  | Nota para desambiguação. |
-| `earqDatasDeExistencia.inicio` | `date` | Não |  | Data de início. |
-| `earqDatasDeExistencia.fim` | `date` | Não |  | Data de fim. |
-| `earqIdentificadoresExternos[]` | `array(obj)` | Não |  | Ex.: ORCID, CPF/CNPJ, VIAF, Wikidata. |
-| `earqContacto.email` | `email` | Não |  | Contato (se aplicável). |
-| `earqContacto.telefone` | `string` | Não |  |  |
-| `earqContacto.endereco` | `string` | Não |  |  |
+| `earqDocumentoId` | `string` | Sim |  | Identificador único do documento. Recomenda-se UUID, URI ou código interno estável. |
+| `DcTitle` | `string` | Sim |  | Título do documento. Corresponde ao elemento Dublin Core utilizado para identificação e recuperação. |
+| `DcDescription` | `string` | Não |  | Descrição resumida do conteúdo, assunto ou contexto do documento. |
+| `DcSubject[]` | `array(string)` | Não |  | Lista de assuntos, descritores ou palavras-chave associados ao documento. |
+| `dc.relation[]` | `array(object)` | Não | Pode conter `earqDocumentoId`, `earqProcessoId`, `DcTitle` | Relações com outros documentos ou processos. Permite registrar vínculos intelectuais, processuais ou referenciais. |
+| `dc.date.issued` | `string` | Sim | `format: date` | Data de emissão, produção ou expedição do documento,  ou seja a data em que o documento é finalizado, assinado e passa a ter efeito no padrão ISO 8601 (`AAAA-MM-DD`). |
+| `earqDocumentoNumero` | `string` | Não |  | Número formal do documento, quando existente (ex.: ofício, portaria, memorando). |
+| `earqDocumentoProtocolo` | `string` | Não |  | Número de protocolo associado ao documento. |
+| `earqProcessoDossieId` | `string` | Não |  | Identificador do processo ou dossiê ao qual o documento pertence. |
+| `earqVolumeId` | `string` | Não |  | Identificador do volume em que o documento está inserido. |
+| `earqDocumentoMeio` | `string` | Sim | `digital`, `não digital`, `híbrido` | Indica a natureza material do documento: exclusivamente digital, exclusivamente não digital ou híbrido. |
+| `earqDocumentoStatus` | `string` | Sim | `minuta`, `original`, `cópia`, `versão autenticada`, `conferida`, `assinada digitalmente` | Estado diplomático ou situação documental da peça. |
+| `earqDocumentoVersao` | `integer` | Sim | mínimo `1` | Número da versão do documento. Utilizado para controle evolutivo de conteúdo. |
+| `earqDocumentoAutor[]` | `array(Agente)` | Sim | mínimo `1` item | Lista de autores do documento. Cada item referencia `agente_schema.json`. |
+| `earqDocumentoDestinatario[]` | `array(Agente)` | Sim |  | Lista de destinatários do documento. Utilizado para documentos expedidos ou comunicacionais. |
+| `earqDocumentoInteressado[]` | `array(Agente)` | Não |  | Lista de pessoas ou entidades interessadas no conteúdo ou efeitos do documento. |
+| `earqDocumentoOriginador` | `Agente` | Não | `$ref` | Agente originador do documento. Pode representar unidade produtora, sistema de origem ou pessoa responsável pela emissão. |
+| `earqDocumentoRedator` | `Agente` | Sim | `$ref` | Agente redator do documento. Representa quem redigiu ou materializou o conteúdo documental. |
+| `earqDocumentoGenero` | `string` | Não | `TEXTUAL`, `CARTOGRAFICO`, `ICONOGRAFICO`, `SONORO`, `AUDIOVISUAL`, `TRIDIMENSIONAL` | Gênero documental segundo características de linguagem e suporte informacional. |
+| `earqDocumentoEspecie` | `string` | Não |  | Espécie documental (ex.: ofício, requerimento, relatório, parecer). |
+| `earqDocumentoTipo` | `string` | Não |  | Tipo documental derivado da atividade que originou o documento. |
+| `dc.language` | `string` | Não | regex `^[a-z]{3}$` | Idioma principal do documento em código ISO 639-2 de três letras. |
+| `earqDocumentoQtFolha` | `integer` | Não | mínimo `1` | Quantidade de folhas/páginas associadas ao documento, quando aplicável. |
+| `earqDocumentoAnexo` | `boolean` | Não | `true` / `false` | Indica se o documento possui algum anexo vinculado a ele. |
+| `earqClasseId` | `object` | Sim | obrigatório `codigo` | Classe de classificação arquivística atribuída ao documento. Pode conter `codigo`, `descricao` e `planoDeClassificacaoId`. |
+| `earqDocumentoDestinacao` | `string` | Não | `transferência`, `eliminação`, `recolhimento` | Destinação prevista conforme tabela de temporalidade. |
+| `earqDocumentoPrazoDeGuarda` | `string` | Não |  | Indicação do prazo estabelecido em tabela de temporalidade e destinação. Deve ser preenchido com a quantidade de meses de guarda. |
+| `earqDocumentoLocalizacao` | `object` | Não | pode conter `enderecoFisico`, `siglaUnidade`, `observacao` | Localização física ou administrativa do documento quando aplicável, especialmente para documentos não digitais ou híbridos. |
+| `earqNivelDeAcessoId` | `string` | Sim | valor padrão `ostensivo` | Nível de acesso do documento. Define restrições de consulta conforme norma aplicável. |
+| `earqDocumentoIndicacaoAnotacao` | `boolean` | Sim | `true` / `false` | Indica a existência de anotações, despachos, vistos ou marcas de tramitação no documento. |
+| `earqDocumentoSetorExecucao` | `string` | Não |  | Unidade administrativa ou setor responsável pela execução relacionada ao documento. |
+| `earqComponentes[]` | `array(Componente)` | Não | `$ref` | Lista de componentes documentais. Representa arquivos digitais, anexos, mídias ou partes técnicas do documento. |
+| `earqEventos[]` | `array(Evento)` | Não | `$ref` | Lista de eventos associados ao documento ao longo de seu ciclo de vida (gestão, preservação, acesso, tramitação etc.). |
 
-⚠️ **Atenção (validação):** alinhar `required` ao mesmo *case* de `properties` (hoje há divergência).
+### 4.2 `componente_schema.json` — Componente
 
----
-
-### 4.4 `evento_schema.json` — Evento
-**Finalidade:** registrar evento associado a Documento/Componente ao longo do ciclo de vida.
+**Finalidade:** representar a entidade técnica vinculada ao documento arquivístico. O componente corresponde ao arquivo digital, objeto físico, mídia ou parte material que contém a informação registrada. Reúne metadados técnicos, dependências tecnológicas, fixidez, assinaturas, localização e eventos associados ao longo do ciclo de vida.
 
 | Campo | Tipo | Obrigatório | Valores/Regra | Observações |
 |---|---|---:|---|---|
-| `EarqEventoId` | `string` | Sim |  | Identificador único do evento. |
-| `EarqEventoTipo` | `string (enum)` | Sim | Lista codificada (`ECV*`, `EPROT*`, `ECLA*`, `EPRES*`) | Vocabulário controlado (em evolução). |
-| `EarqEventoDataHora` | `date-time` | Sim | ISO 8601 | Data/hora do evento. |
-| `EarqEventoAgente` | `Agente` (`$ref`) | Sim |  | Responsável pelo evento. |
-| `EarqEventoDetalhe` | `string` | Não |  | Descrição/parametrização. |
-| `EarqEventoResultado` | `string (enum)` | Condicional | `sucesso` \| `falha` | Obrigatório “quando agente for software” (regra condicional precisa alinhar com `agentType`). |
+| `earqComponenteId` | `string` | Sim |  | Identificador único do componente. Recomenda-se UUID, URI ou código interno persistente. |
+| `earqComponenteNomeOriginal` | `string` | Sim |  | Nome original do arquivo, objeto ou item no momento de sua captura ou incorporação ao sistema. |
+| `earqComponenteTamanho` | `integer` | Sim | mínimo `0` | Tamanho numérico do componente. Deve ser interpretado em conjunto com `earqComponenteUnidadeMedidaTamanho`. |
+| `earqComponenteUnidadeMedidaTamanho` | `string` | Sim | `B`, `KB`, `MB`, `GB`, `TB` | Unidade de medida do tamanho informado. Recomenda-se uso de bytes (`B`) para maior precisão técnica. |
+| `earqComponenteSoftwareCriacao` | `Software` | Não | `$ref` | Software utilizado na criação ou geração do componente. Referencia `software_schema.json`. |
+| `earqComponenteDataCriacao` | `string` | Sim | `format: date-time` | Data e hora de criação do componente no padrão ISO 8601. |
+| `earqComponenteNivelComposicao` | `integer` | Não | `0`, `1` | Indica se o componente está submetido a compressão, empacotamento, criptografia ou encapsulamento. Valor `0` indica ausência; valor `1` indica presença de composição. |
+| `earqComponenteNumeroOrdem` | `integer` | Não | mínimo `1` | Ordem de apresentação do componente dentro do documento quando houver múltiplos componentes. |
+| `earqComponenteInibidor` | `Inibidor` | Não | `$ref` | Inibidor associado ao componente, como restrição técnica, criptografia, DRM, bloqueio ou mecanismo impeditivo. Referencia `inibidor_schema.json`. |
+| `earqComponenteFormato` | `Formato` | Não | `$ref` | Formato técnico do componente (ex.: PDF/A, TIFF, WAV, XML). Metadado altamente recomendável para preservação e acesso. Referencia `formato_schema.json`. |
+| `earqComponenteLocalizacao` | `Localizacao` | Sim | `$ref` | Localização lógica, física ou URI onde o componente pode ser encontrado. Referencia `localizacao_schema.json`. |
+| `earqComponenteSuporte` | `string` | Não | `FITA_MAGNETICA`, `HD`, `SSD`, `CARTAO_MEMORIA`, `DISCO_OPTICO`, `NAOIDENTIFICADO` | Tipo de suporte físico de armazenamento associado ao componente. |
+| `earqComponenteSoftwareLeitura` | `Software` | Não | `$ref` | Software necessário ou recomendado para leitura, renderização ou interpretação do componente. Referencia `software_schema.json`. |
+| `earqComponenteHardware` | `Hardware` | Não | `$ref` | Hardware necessário ou relacionado ao acesso, captura ou leitura do componente. Referencia `hardware_schema.json`. |
+| `earqComponenteOutrasDependencias[]` | `array(Dependencia)` | Não | `$ref` | Lista de dependências adicionais necessárias ao uso do componente, como bibliotecas, codecs, esquemas externos ou serviços correlatos. |
+| `earqComponenteRelacionamentos[]` | `array(Relacionamento)` | Não | `$ref` | Relações com outros componentes, como derivação, dependência, versão correlata, representação alternativa ou vínculo estrutural. |
+| `earqComponenteFixidade` | `Fixidade` | Sim | `$ref` | Informação de fixidez utilizada para verificação de integridade do componente, normalmente hash criptográfico. Referencia `fixidade_schema.json`. |
+| `earqComponenteAssinaturas[]` | `array(Assinatura)` | Não | `$ref` | Lista de assinaturas associadas ao componente, incluindo assinaturas digitais e outras formas de autenticação registradas. |
+| `earqEventos[]` | `array(Evento)` | Não | `$ref` | Lista de eventos associados ao componente ao longo de seu ciclo de vida, como captura, migração, verificação de fixidez, acesso, assinatura e preservação. |
 
-⚠️ **Atenção (regra condicional):** o `if/then` verifica `EarqEventoAgente.tipo = software`, mas o schema de Agente usa `agentType`. Ajustar para funcionar.
 
----
+### 4.3 `processo_dossie_schema.json` — Processo / Dossiê
 
-### 4.5 `fixidade_schema.json` — Fixidade
-**Finalidade:** registrar fixidez (hash) de componente.
+**Finalidade:** representar o processo ou dossiê como unidade de arquivamento que agrega documentos, volumes, metadados de contexto, classificação, destinação, acesso e eventos associados ao longo de seu ciclo de vida.
 
-| Campo | Tipo | Obrigatório | Observações |
-|---|---|---:|---|
-| `algoritmo` | `string` | Sim | Ex.: `sha256`, `sha512`. |
-| `hash` | `string` | Sim | Valor do hash (string). |
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `earqProcessoId` | `string` | Sim |  | Identificador único do processo ou dossiê. Recomenda-se UUID, URI ou código interno persistente. |
+| `dc.relation[]` | `array(object)` | Não | Pode conter `earqProcessoId`, `earqDocumentoId`, `DcTitle` | Relações com outros processos, dossiês ou documentos. Permite registrar vínculos processuais, documentais ou referenciais. |
+| `dc.date.issued` | `string` | Sim | `format: date` | Data de emissão, autuação, abertura ou produção do processo/dossiê no padrão ISO 8601 (`AAAA-MM-DD`). |
+| `earqProcessoNumero` | `string` | Não |  | Número formal do processo ou dossiê, quando existente. |
+| `earqProcessoProtocolo` | `string` | Não |  | Número de protocolo associado ao processo ou dossiê. |
+| `earqProcessoDossieId` | `string` | Não |  | Identificador correlato do processo ou dossiê, útil para relacionamento com outros sistemas ou estruturas de negócio. |
+| `earqProcessoMeio` | `string` | Sim | `digital`, `não digital`, `híbrido` | Indica a natureza material do processo ou dossiê: exclusivamente digital, exclusivamente não digital ou híbrido. |
+| `earqProcessoStatus` | `string` | Sim | `tramitando`, `sobrestado`, `arquivado` | Estado do processo ou dossiê no fluxo de trabalho ou no ciclo de vida arquivístico. |
+| `earqProcessoAutor[]` | `array(Agente)` | Sim | mínimo `1` item | Lista de autores do processo. Cada item referencia `agente_schema.json`. |
+| `earqProcessoDestinatario[]` | `array(Agente)` | Não |  | Lista de destinatários do processo ou dossiê, quando aplicável. Cada item referencia `agente_schema.json` |
+| `earqProcessoInteressado[]` | `array(Agente)` | Não |  | Lista de interessados no processo ou dossiê. Cada item referencia `agente_schema.json`|
+| `earqProcessoOriginador` | `Agente` | Não | `$ref` | Agente originador do processo ou dossiê. Pode representar unidade produtora, sistema de origem ou pessoa responsável pela abertura. Referencia `agente_schema.json` |
+| `earqProcessoRedator` | `Agente` | Não | `$ref` | Agente redator vinculado à elaboração ou formalização do processo ou dossiê. Referencia `agente_schema.json`|
+| `earqProcessoEspecie` | `string` | Não |  | Espécie documental do processo ou dossiê. |
+| `earqProcessoTipo` | `string` | Não |  | Tipo documental derivado da atividade que originou o processo ou dossiê. |
+| `dc.language` | `string` | Não | regex `^[a-z]{3}$` | Idioma principal do processo ou dossiê em código ISO 639-2 de três letras. |
+| `earqProcessoQtFolha` | `integer` | Não | mínimo `1` | Quantidade de folhas associadas ao processo ou dossiê, quando aplicável. |
+| `earqClasseId` | `object` | Sim | obrigatório `codigo` | Classe de classificação arquivística atribuída ao processo ou dossiê. Pode conter `codigo`, `descricao` e `planoDeClassificacaoId`. |
+| `earqProcessoDestinacao` | `string` | Não | `transferência`, `eliminação`, `recolhimento` | Destinação prevista conforme tabela de temporalidade. |
+| `earqProcessoPrazoDeGuarda` | `string` | Não |  | Indicação do prazo estabelecido em tabela de temporalidade e destinação de documentos para o cumprimento da destinação. Deve ser preenchido com a quantidade de meses que o processo deve ser guardado. |
+| `earqProcessoLocalizacao` | `object` | Não | pode conter `enderecoFisico`, `siglaUnidade`, `observacao` | Localização física ou administrativa do processo ou dossiê, especialmente relevante para documentos não digitais ou híbridos. |
+| `earqNivelDeAcessoId` | `string` | Sim |  | Nível de acesso do processo ou dossiê. Define restrições de consulta conforme norma aplicável. |
+| `earqProcessoIndicacaoAnotacao` | `boolean` | Sim | `true` / `false` | Indica a existência de anotações, despachos, vistos ou marcas de tramitação no processo ou dossiê. |
+| `earqProcessoSetorExecucao` | `string` | Não |  | Unidade administrativa ou setor responsável pela execução relacionada ao processo ou dossiê. |
+| `earqVolumes[]` | `array(object)` | Não | mínimo `1` item por array, quando presente | Lista ordenada de volumes pertencentes ao processo, com numeração e ordem de apresentação. Cada item exige `ordemVolume` e `earqVolume`. |
+| `earqVolumes[].ordemVolume` | `integer` | Sim, dentro do item | mínimo `1` | Ordem sequencial do volume dentro do processo ou dossiê. |
+| `earqVolumes[].earqVolume` | `Volume` | Sim, dentro do item | `$ref` | Volume associado ao processo ou dossiê. Referencia `volume_schema.json`. |
+| `earqEventos[]` | `array(Evento)` | Não | `$ref` | Lista de eventos associados ao processo ou dossiê ao longo de seu ciclo de vida (gestão, preservação, acesso, tramitação etc.). |
 
----
+### 4.4 `volume_schema.json` — Volume
 
-### 4.6 `localizacao_schema.json` — Localização
-**Finalidade:** indicar onde o componente/documento pode ser encontrado (URI ou localização física).
+**Finalidade:** representar o volume como unidade subordinada ao processo ou dossiê, utilizada para organizar e controlar a ordenação material ou lógica de conjuntos documentais, reunindo identificação, datas, localização e a lista ordenada de documentos que o compõem.
 
-| Campo | Tipo | Obrigatório | Valores |
-|---|---|---:|---|
-| `tipo` | `string (enum)` | Sim | `URI` \| `LOCALIZACAOFISICA` |
-| `valor` | `string` | Sim | URI, caminho, referência física etc. |
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `earqVolumeId` | `string` | Sim |  | Identificador único do volume. Recomenda-se UUID, URI ou código interno persistente. |
+| `earqVolumeNumero` | `string` | Sim |  | Número ou designação do volume dentro do processo ou dossiê. |
+| `earqVolumeQtFolha` | `integer` | Não | mínimo `1` | Quantidade de folhas associadas ao volume, quando aplicável. |
+| `earqDataAbertura` | `string` | Sim | `format: date` | Data de abertura do volume no padrão ISO 8601 (`AAAA-MM-DD`). |
+| `earqDataEncerramento` | `string` | Não | `format: date` | Data de encerramento do volume no padrão ISO 8601 (`AAAA-MM-DD`). |
+| `earqVolumeLocalizacao` | `Localizacao` | Não | `$ref` | Localização lógica, física ou URI associada ao volume. Referencia `localizacao_schema.json`. |
+| `earqDocumentos[]` | `array(object)` | Não | mínimo `1` item por array, quando presente; `uniqueItems: true` | Lista ordenada de documentos pertencentes ao volume, com ordem de apresentação. O `uniqueItems: true` impede repetição do objeto completo, mas não garante sozinho unicidade isolada de `earqDocumentoId` ou de `ordemApresentacao`. |
+| `earqDocumentos[].ordemApresentacao` | `integer` | Sim, dentro do item | mínimo `1` | Ordem de apresentação do documento dentro do volume. |
+| `earqDocumentos[].earqDocumentoId` | `string` | Sim, dentro do item |  | Identificador do documento pertencente ao volume. |
 
----
+### 4.5 `agente_schema.json` — Agente
 
-### 4.7 `relacionamento_schema.json` — RelacionamentoComponente
-**Finalidade:** registrar relações entre componentes (origem/destino).
+**Finalidade:** representar agentes envolvidos na produção, gestão, preservação, acesso e registro de eventos relacionados aos documentos arquivísticos digitais. O agente pode corresponder a pessoa, organização, hardware ou software.
 
-| Campo | Tipo | Obrigatório | Observações |
-|---|---|---:|---|
-| `relacaoIDComponenteOrigem` | `string` | Sim | ID do componente de origem. |
-| `relacaoIDComponenteDestino` | `string` | Sim | ID do componente destino. |
-| `relacaoTipo` | `string` | Não | Tipo de relação (vocabulário a definir). |
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `earqAgenteId` | `string` | Sim |  | Identificador único do agente. Ex.: UUID, URI ou código interno. |
+| `earqAgenteNome` | `string` | Sim |  | Nome do agente (pessoa, organização, hardware ou software). |
+| `earqFormaDoNome` | `string` | Não |  | Forma do nome. Ex.: nome completo, abreviado, nome artístico, sigla institucional ou denominação técnica. |
+| `earqAgenteStatus` | `string` | Sim | `Ativo`, `Inativo` | Situação cadastral ou operacional do agente. |
+| `agentType` | `string` | Sim | `Pessoa`, `Organização`, `hardware`, `software` | Tipo do agente. Metadado alinhado ao PREMIS. |
+| `agentVersion` | `string` | Condicional | obrigatório quando `agentType = software` ou `hardware` | Versão do agente referenciado em `earqAgenteNome`, quando se tratar de software ou hardware. Metadado PREMIS relevante para reprodutibilidade e preservação. |
+| `agentNote` | `string` | Não |  | Informação adicional para desambiguar, contextualizar ou descrever o agente. Metadado PREMIS. |
+| `earqDatasDeExistencia` | `object` | Não | pode conter `inicio`, `fim` | Período de existência, vigência ou atividade do agente. |
+| `earqDatasDeExistencia.inicio` | `string` | Não | `format: date` | Data inicial de existência, atuação ou vigência no padrão ISO 8601 (`AAAA-MM-DD`). |
+| `earqDatasDeExistencia.fim` | `string` | Não | `format: date` | Data final de existência, atuação ou vigência no padrão ISO 8601 (`AAAA-MM-DD`). |
+| `earqIdentificadoresExternos[]` | `array(object)` | Não | pode conter `sistema`, `identificador` | Identificadores adicionais em sistemas externos, como ORCID, CPF, CNPJ, Wikidata, VIAF ou outros cadastros de autoridade. |
+| `earqIdentificadoresExternos[].sistema` | `string` | Não |  | Nome do sistema externo de identificação. |
+| `earqIdentificadoresExternos[].identificador` | `string` | Não |  | Valor do identificador no sistema informado. |
+| `earqContacto` | `object` | Não | pode conter `email`, `telefone`, `endereco` | Informações de contato do agente, quando aplicável. |
+| `earqContacto.email` | `string` | Não | `format: email` | Endereço eletrônico de contato. |
+| `earqContacto.telefone` | `string` | Não |  | Telefone de contato. |
+| `earqContacto.endereco` | `string` | Não |  | Endereço físico ou postal de contato. |
 
----
+### 4.6 `evento_schema.json` — Evento
 
-### 4.8 `inibidor_schema.json` — Inibidor
-**Finalidade:** representar inibidores (ex.: restrições, impedimentos, bloqueios, DRM, sigilo técnico etc.).
+**Finalidade:** representar eventos associados a documentos, processos, dossiês ou componentes ao longo de seu ciclo de vida. Os eventos registram ações de gestão, preservação, tramitação, captura, assinatura, verificação de fixidez, classificação, acesso e outras ocorrências relevantes para a cadeia de custódia digital.
 
-| Campo | Tipo | Obrigatório | Observações |
-|---|---|---:|---|
-| `tipo` | `string` | Sim | Categoria do inibidor (vocabulário aberto). |
-| `chave` | `string` | Não | Token/identificador associado ao inibidor (quando aplicável). |
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `EarqEventoId` | `string` | Sim |  | Identificador único do evento. Ex.: UUID, URI ou código interno. |
+| `EarqEventoTipo` | `string` | Sim | `ECV1...ECV7`, `EPROT1...EPROT10`, `ECLA1...ECLA10`, `EPRES1...EPRES9` | Tipo do evento conforme codificação adotada no modelo e-ARQ Brasil. Pode representar ações como captura, tramitação, classificação, assinatura, verificação de fixidez, migração, acesso e preservação. |
+| `EarqEventoDataHora` | `string` | Sim | `format: date-time` | Data e hora do evento no padrão ISO 8601. |
+| `EarqEventoAgente` | `Agente` | Sim | `$ref` | Agente responsável pelo evento. Pode corresponder a pessoa, organização, software ou hardware. Referencia `agente_schema.json`. |
+| `EarqEventoDetalhe` | `string` | Não |  | Detalhe ou descrição do evento, incluindo parâmetros relevantes, contexto, justificativa ou informação complementar sobre o que ocorreu. |
+| `EarqEventoResultado` | `string` | Condicional | `sucesso`, `falha` | Resultado do evento. Obrigatório quando o agente responsável for do tipo `software`, conforme regra condicional do schema. |
 
----
+### 4.7 `assinatura_schema.json` — Assinatura
 
-### 4.9 `software_schema.json` — Software
-**Finalidade:** descrever software relacionado à criação/leitura do componente.
+**Finalidade:** representar assinaturas associadas a componentes documentais, contemplando tanto mecanismos baseados em autenticação por usuário e senha quanto assinaturas realizadas com certificado digital. O schema registra o signatário, o tipo jurídico da assinatura e os elementos técnicos necessários à verificação futura.
 
-| Campo | Tipo | Obrigatório | Observações |
-|---|---|---:|---|
-| `nome` | `string` | Sim | Nome do software. |
-| `versao` | `string` | Não | Versão do software. |
-| `tipo` | `string` | Não | Categoria/tipo (vocabulário aberto). |
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `signatario` | `Agente` | Sim | `$ref` | Agente que realizou a assinatura. Referencia `agente_schema.json`. |
+| `dataHoraAssinatura` | `string` | Sim | `format: date-time` | Data e hora da assinatura no padrão ISO 8601. |
+| `tipoAssinatura` | `string` | Sim | `SIMPLES`, `AVANCADA`, `QUALIFICADA` | Tipo de assinatura conforme a Lei nº 14.063/2020. |
+| `assinaturaUsuarioSenha` | `object` | Condicional | exige um dos blocos técnicos do schema | Bloco destinado ao registro de assinatura baseada em autenticação de usuário. O schema exige a presença de pelo menos um mecanismo técnico de assinatura (`assinaturaUsuarioSenha` ou `assinaturaCertificadoDigital`). |
+| `assinaturaUsuarioSenha.identificadorUsuario` | `string` | Sim, dentro do bloco |  | Identificador único usado pelo sistema de autenticação para identificar o usuário. |
+| `assinaturaUsuarioSenha.sistemaAutenticacao` | `string` | Sim, dentro do bloco |  | Sistema informatizado que conhecia a identidade do usuário e realizou a autenticação no momento da assinatura. Ex.: SEI, LDAP, AD, Keycloak. |
+| `assinaturaUsuarioSenha.fatorAutenticacao` | `string` | Não | `senha`, `senha_hash`, `sessao_autenticada`, `outro` | Fator ou evidência de autenticação utilizado no momento da assinatura. |
+| `assinaturaUsuarioSenha.checksumConteudo` | `Fixidade` | Sim, dentro do bloco | `$ref` | Fixidez do conteúdo assinado. Permite comprovar a integridade do conteúdo vinculado à autenticação. Referencia `fixidade_schema.json`. |
+| `assinaturaCertificadoDigital` | `object` | Condicional | exige um dos blocos técnicos do schema | Bloco destinado ao registro de assinatura baseada em certificado digital. O schema exige a presença de pelo menos um mecanismo técnico de assinatura (`assinaturaUsuarioSenha` ou `assinaturaCertificadoDigital`). |
+| `assinaturaCertificadoDigital.tipoPadrao` | `string` | Não | `PKCS#7`, `CMS`, `CAdES`, `PAdES`, `XAdES`, `XMLDSig`, `OUTRO` | Padrão técnico utilizado para codificação da assinatura digital. |
+| `assinaturaCertificadoDigital.formatoAssinatura` | `string` | Não | `EMBUTIDA`, `DESTACADA` | Forma de armazenamento da assinatura digital no componente. |
+| `assinaturaCertificadoDigital.earqComponenteIdDestacado` | `string` | Condicional | obrigatório quando `formatoAssinatura = DESTACADA` | Identificador do componente que representa o arquivo de assinatura destacada. |
+| `assinaturaCertificadoDigital.referenciaValidacao` | `string` | Não | `LCR`, `OCSP`, `OUTRO` | Referência para validação da assinatura. Pode indicar uso de Lista de Certificados Revogados (LCR), resposta OCSP ou outro mecanismo de validação. |
 
----
+### 4.8 `fixidade_schema.json` — Fixidade
+
+**Finalidade:** representar informações de fixidez utilizadas para comprovar a integridade de documentos, componentes ou conteúdos digitais ao longo do tempo. A fixidez permite verificar se o objeto permaneceu inalterado desde a geração do hash.
+
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `algoritmo` | `string` | Sim | `MD5`, `SHA-1`, `SHA-256`, `SHA-512`, `OUTRO` | Algoritmo criptográfico utilizado para cálculo da fixidez. Recomenda-se o uso de algoritmos contemporaneamente confiáveis, como `SHA-256` ou superiores. |
+| `hash` | `string` | Sim | mínimo `1` caractere | Valor do hash calculado para o conteúdo. Deve ser armazenado exatamente como produzido pelo algoritmo utilizado. |
+| `originador` | `string` | Não |  | Identifica quem ou o que gerou a informação de fixidez. Pode representar sistema, software, equipamento, serviço ou agente responsável pelo cálculo. |
+
+### 4.9 `dependencia_schema.json` — Dependência
+
+**Finalidade:** representar dependências técnicas, lógicas ou externas necessárias para interpretação, execução, renderização, validação ou uso adequado de documentos e componentes digitais.
+
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `tipo` | `string` | Sim |  | Tipo da dependência. Pode representar biblioteca, codec, esquema XML, serviço externo, base de dados, fonte tipográfica, componente auxiliar, módulo de software ou outra exigência necessária ao uso do objeto digital. |
+| `id` | `string` | Sim |  | Identificador da dependência. Pode ser URI, UUID, nome técnico, código interno, versão de pacote ou outra referência inequívoca. |
 
 ### 4.10 `hardware_schema.json` — Hardware
-**Finalidade:** descrever hardware necessário/associado ao componente.
 
-| Campo | Tipo | Obrigatório | Observações |
-|---|---|---:|---|
-| `nome` | `string` | Não | Nome/modelo. |
-| `tipo` | `string` | Não | Categoria (scanner, drive, etc.). |
-| `outrasInformacoes` | `string` | Não | Observações. |
-
----
-
-### 4.11 `formato_schema.json` — Formato
-**Finalidade:** descrever formato do componente (ex.: PDF/A-2b, TIFF, WAV).
-
-| Campo | Tipo | Obrigatório | Observações |
-|---|---|---:|---|
-| `nome` | `string` | Sim | Nome do formato. |
-| `versao` | `string` | Não | Versão/perfil do formato. |
-
----
-
-### 4.12 `componente_schema.json` — Componente
-**Finalidade:** entidade técnica (arquivo digitais) vinculada a Documento; concentra metadados técnicos e de preservação.
+**Finalidade:** representar equipamentos físicos necessários, utilizados ou associados à criação, captura, leitura, execução, preservação ou acesso de documentos e componentes digitais.
 
 | Campo | Tipo | Obrigatório | Valores/Regra | Observações |
 |---|---|---:|---|---|
-| `earqComponenteId` | `string` | Sim |  | Identificador do componente. |
-| `earqComponenteNomeOriginal` | `string` | Sim |  | Nome original do arquivo/item. |
-| `earqComponenteTamanho` | `integer` | Não | ≥ 0 | Tamanho numérico. |
-| `earqComponenteUnidadeMedidaTamanho` | `string (enum)` | Não | `KB` `MB` `GB` `TB` `CAIXA` `METRO LINEAR` | Mistura unidades digitais e físicas (ok, mas convém definir regra de uso). |
-| `earqComponenteSoftwareCriacao` | `Software` (`$ref`) | Não |  | Software de criação. |
-| `earqComponenteDataCriacao` | `date` | Não |  | Data de criação. |
-| `earqComponenteNivelComposicao` | `integer (enum)` | Não | `0` ou `1` | Informação sobre se o componente digital está sujeito a um ou mais processos de  compressão, criptografia ou empacotamento, bem como qual é esse nível. '0' quando o componente não foi submetido a compressão, '1' se foi submetido a compresssão |
-| `earqComponenteInibidor` | `Inibidor` (`$ref`) | Não |  |  |
-| `earqComponenteFormato` | `Formato` (`$ref`) | Não |  | É Altamente desejavel o preenchimento deste metadado quando o formato é conhecido, pois ele permite mapaer quais softwares são capazes de visualizar a informação do componente |
-| `earqComponenteLocalizacao` | `Localização` (`$ref`) | Não |  |  |
-| `earqComponenteSuporte` | `string (enum)` | Não | inclui `HD`, `CD-ROM`, `DVD`, `PAPEL`, etc. | Tipo do Suporte em que o componente esta armazenado. |
-| `earqComponenteSoftwareLeitura` | `Software` (`$ref`) | Não |  |  |
-| `earqComponenteHardware` | `Hardware` (`$ref`) | Não |  |  |
-| `earqComponenteOutrasDependencias[]` | `Dependência` (`$ref`) | Não |  |  |
-| `earqComponenteRelacionamentos[]` | `Relacionamento` (`$ref`) | Não |  | Alguns compoentes estabelecem relações com outros componentes, a exemplo um componente pode ser parte de outro, aprofundando esse exemplo um componente que representa um arquivo de folha de estilos "CSS" é relacionado com o componente que representa um arquivo html. É Altamente desejavel o preenchimento deste metadado.   |
-| `earqComponenteFixidade` | `Fixidade` (`$ref`) | Não |  | Hash do componente. |
-| `earqComponenteAssinaturas[]` | `Assinatura` (`$ref`) | Não |  | Assinaturas associadas. |
-| `earqEventos[]` | `Evento` (`$ref`) | Não |  | Trilha de eventos do componente. |
+| `nome` | `string` | Sim |  | Nome do equipamento, fabricante, modelo ou denominação técnica do hardware. |
+| `tipo` | `string` | Não |  | Tipo ou categoria do hardware. Ex.: scanner, leitora óptica, servidor, drive magnético, estação de trabalho, dispositivo móvel, appliance ou periférico especializado. |
+| `outrasInformacoes` | `string` | Não |  | Informações complementares sobre o hardware, como capacidade, interface, arquitetura, requisitos operacionais, número de série, observações técnicas ou contexto de uso. |
 
----
+### 4.11 `software_schema.json` — Software
 
-### 4.13 `documento_schema.json` — Documento
-**Finalidade:** entidade intelectual e de gestão (metadados descritivos, classificação, acesso, vínculos e lista de componentes e eventos).
-
-**Campos principais (seleção, por relevância):**
+**Finalidade:** representar programas, aplicações, sistemas ou utilitários utilizados na criação, leitura, processamento, preservação, validação ou acesso de documentos e componentes digitais.
 
 | Campo | Tipo | Obrigatório | Valores/Regra | Observações |
 |---|---|---:|---|---|
-| `earqDocumentoId` | `string` | (Sim, intenção do schema) |  | Identificador do documento. |
-| `DcTitle` | `string` | Sim |  | Título. |
-| `DcDescription` | `string` | Não |  | Descrição. |
-| `DcSubject[]` | `array(string)` | Não |  | Assuntos. |
-| `dc.relation[]` | `array(obj)` | Não |  | Relações com outros documentos (mínimo `EarqDocumentoId`). |
-| `dc.date.issued` | `date` | Sim |  | Definida como “data de produção/finalização”. este elemento do padrão dublin core é o que melhor representa a data de produção do documento, ou seja a data em que o documento é finalizado, assinado e passa a ter efeito |
-| `earqDocumentoNumero` | `string` | Não |  | Número do documento. |
-| `earqDocumentoProtocolo` | `string` | Não |  | Protocolo. |
-| `earqProcessoDossieId` | `string` | Não |  | Vincula a dossiê/processo. |
-| `earqVolumeId` | `string` | Não |  | Vincula a volume. |
-| `earqDocumentoMeio` | `string (enum)` | Sim | `digital` \| `não digital` \| `híbrido` | Meio. |
-| `earqDocumentoStatus` | `string (enum)` | Sim | minuta/original/cópia/... | Status. |
-| `earqDocumentoVersao` | `integer` | Sim | ≥ 1 | Versão. |
-| `earqDocumentoAutor` | `Agente` (`$ref`) | Sim |  | Autor. |
-| `earqDocumentoDestinatario` | `Agente` (`$ref`) | Sim |  | Destinatário. |
-| `earqDocumentoOriginador` | `Agente` (`$ref`) | Não |  | Originador. |
-| `earqDocumentoRedator` | `Agente` (`$ref`) | Sim |  | Redator. |
-| `earqDocumentoInteressado` | `Agente` (`$ref`) | Não |  | Interessado. |
-| `earqDocumentoGenero` | `string (enum)` | Não | textual/audiovisual/... | Gênero documental. |
-| `earqDocumentoEspecie` | `string` | Não |  | Espécie. |
-| `earqDocumentoTipo` | `string` | Não |  | Tipo. |
-| `dc.language` | `string (pattern)` | Não | `^[a-z]{3}$` | Idioma (3 letras), conforme ISO 639-2:1998|
-| `earqDocumentoQtFolha` | `integer` | Não | ≥ 0 | Qt. folhas. |
-| `earqDocumentoSequencia` | `string` | Não |  | Sequência. |
-| `earqDocumentoAnexo` | `boolean` | Não |  | Se é anexo. |
-| `earqDocumentoPrevisaoDesclassificacao` | `date` | Não |  | Data prevista. |
-| `earqClasseId` | `object` | Não | `codigo` obrigatório | Classe/código/plano. |
-| `earqDocumentoDestinacao` | `string (enum)` | Não | transferência/eliminação/recolhimento | Destinação. |
-| `earqDocumentoPrazoDeGuarda` | `date` | Não |  | Prazo (como data). |
-| `earqDocumentoLocalizacao` | `object` | Não |  | Localização física administrativa (endereço/sigla/obs). |
-| `earqNivelDeAcessoId` | `string (enum)` | Não | público/restrito/reservado/classificado | Nível de acesso. |
-| `earqDocumentoIndicacaoAnotacao` | `boolean` | Não |  | Indicação de anotação. |
-| `earqDocumentoSetorExecucao` | `string` | Não |  | Setor. |
-| `earqComponentes[]` | `array(Componente)` | Não |  | Componentes associados. |
-| `earqEventos[]` | `array(Evento)` | Não |  | Trilha de eventos do documento. |
+| `nome` | `string` | Sim |  | Nome do software, sistema, aplicação ou ferramenta utilizada. |
+| `versao` | `string` | Não |  | Versão do software. Informação relevante para reprodutibilidade, compatibilidade técnica e preservação digital. |
+| `tipo` | `string` | Não |  | Tipo ou categoria do software. Ex.: editor de texto, visualizador, sistema corporativo, SIGAD, banco de dados, conversor, validador, antivírus, serviço web ou biblioteca técnica. |
 
-⚠️ **Atenção (validação):** alinhar `required` com os nomes de `properties` (há divergências de *case* e também campos requeridos que não aparecem com o mesmo nome).
+### 4.12 `inibidor_schema.json` — Inibidor
 
-#### 4.13.1 Detalhamento das definições (pendências de especificação)
-- **Detalhar melhor** o metadado `earqDocumentoGenero`.
-- `earqDocumentoPrevisaoDesclassificacao`: detalhar o porquê de esse metadado não existir no padrão e existir no e-ARQ Brasil. Discutimos que a existência deste metadado é para uma possível estratégia de implementação, podendo ele ser calculado a partir do evento de classificação de sigilo (`ECV6` e `ECV7`).
-- `earqDocumentoDestinacao`: não é obrigatório no padrão, apesar de ser no e-ARQ Brasil, para o caso do uso do padrão ser trâmite externo; neste caso, a destinação final será dada no destinatário do trâmite (órgão acumulador final do documento).
-- `earqDocumentoPrazoDeGuarda`: mesmo caso de `earqDocumentoDestinacao`.
-- `earqDocumentoSetorExecucao`: não é obrigatório no padrão, apesar de ser no e-ARQ Brasil, para o caso do uso do padrão ser trâmite externo; neste caso, o órgão receptor do trâmite é quem define o setor de execução.
+**Finalidade:** representar mecanismos, condições ou restrições que possam impedir, limitar ou condicionar o acesso, a leitura, o processamento, a reprodução ou a preservação de documentos e componentes digitais.
+
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `tipo` | `string` | Sim |  | Tipo do inibidor. Pode representar criptografia, DRM, bloqueio por senha, limitação de licença, sigilo técnico, dependência proprietária, restrição contratual, mecanismo de proteção ou outro fator impeditivo. |
+| `chave` | `string` | Não |  | Chave, token, credencial, identificador ou referência associada ao inibidor, quando aplicável. |
+
+### 4.13 `formato_schema.json` — Formato
+
+**Finalidade:** representar o formato técnico do componente digital, informação essencial para preservação, interoperabilidade, renderização, migração tecnológica e definição de estratégias de acesso futuro.
+
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `nome` | `string` | Sim |  | Nome do formato do componente digital. Ex.: PDF, PDF/A, TIFF, JPEG, WAV, XML, CSV, DOCX, MP4. |
+| `versao` | `string` | Não |  | Versão, perfil ou variante do formato. Ex.: PDF/A-2b, TIFF 6.0, XML 1.0, CSV RFC4180, OOXML Transitional. |
+
+### 4.14 `localizacao_schema.json` — Localização
+
+**Finalidade:** representar a localização lógica, física ou referencial de documentos, volumes e componentes, permitindo identificar onde o objeto pode ser encontrado, acessado ou recuperado.
+
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `tipo` | `string` | Sim | `URI`, `LOCALIZACAO_EM_DISCO`, `RELATIVA` | Tipo da localização informada. `URI` indica endereço universal (web, repositório ou identificador resolvível); `LOCALIZACAO_EM_DISCO` indica caminho absoluto ou referência local de armazenamento; `RELATIVA` indica caminho relativo dentro de pacote, diretório ou estrutura de empacotamento. |
+| `valor` | `string` | Sim | mínimo `1` caractere | Valor concreto da localização conforme o tipo informado. Pode ser URL, URI, caminho de arquivo, diretório, identificador interno ou referência relativa. |
+
+### 4.15 `relacionamento_schema.json` — Relacionamento
+
+**Finalidade:** representar vínculos entre componentes digitais, permitindo expressar relações estruturais, funcionais, técnicas ou derivativas entre objetos associados ao mesmo documento ou a documentos distintos.
+
+| Campo | Tipo | Obrigatório | Valores/Regra | Observações |
+|---|---|---:|---|---|
+| `relacaoIDComponenteDestino` | `string` | Sim |  | Identificador do componente de destino relacionado ao componente de origem. No modelo atual, a origem é implícita pelo contexto em que o relacionamento está declarado. |
+| `relacaoTipo` | `string` | Não |  | Tipo da relação estabelecida entre os componentes. Pode representar derivação, dependência, representação alternativa, versão correlata, vínculo estrutural, parte integrante, conversão, assinatura associada ou outra relação semântica definida pela implementação. |
 
 ---
 
@@ -341,8 +402,6 @@ Abaixo, para cada schema: **finalidade, campos, tipo, obrigatoriedade, valores c
 - **Documento** descreve o que é (título, data, autor etc.).
 - **Componente** descreve em que forma existe (arquivo PDF, tamanho, formato, fixidez).
 - **Eventos** descrevem o que aconteceu (ex.: “captura”, “verificação de fixidez”).
-
-Como os schemas ainda estão em desenvolvimento e com inconsistências de nomenclatura, recomendo usar este exemplo como “guia de preenchimento” e só depois ajustar para validação estrita quando os nomes/cases forem estabilizados.
 
 ---
 
@@ -1055,3 +1114,24 @@ fichaEspelho.json
 ```
 
 Isso permite que o RDC-Arq associe automaticamente os SIPs às informações de representação necessárias para interpretação dos objetos digitais.
+
+## 9. Considerações Finais
+
+O presente **Manual de Interoperabilidade de Documentos Arquivísticos Digitais** propõe um modelo técnico comum para representação, armazenamento, tramitação e transferência de documentos arquivísticos digitais, orientado por princípios arquivísticos e por padrões amplamente reconhecidos no campo da gestão documental e da preservação digital.
+
+Ao estruturar metadados em **JSON Schema**, organizar entidades como documento, componente, processo, volume, agente e evento, e estabelecer convenções para empacotamento e intercâmbio com uso de padrões como **BagIt** e do modelo **OAIS**, o manual busca reduzir barreiras de interoperabilidade entre sistemas produtores, plataformas de processo eletrônico, sistemas de negócio, arquivos permanentes e repositórios digitais confiáveis.
+
+A adoção deste modelo pode contribuir para:
+
+- fortalecimento da autenticidade, integridade e confiabilidade dos documentos digitais;
+- melhoria dos processos de transferência, recolhimento e custódia digital;
+- maior independência tecnológica por meio de padrões abertos;
+- preservação de longo prazo com manutenção de contexto, significado e valor probatório;
+- integração entre instituições e soluções tecnológicas heterogêneas;
+- estímulo à cooperação técnica entre órgãos e entidades custodiais.
+
+Este documento não pretende encerrar o tema, mas servir como base evolutiva para futuras versões. A transformação tecnológica, o surgimento de novos formatos documentais, o avanço de assinaturas eletrônicas, a expansão da inteligência artificial e a crescente complexidade dos ecossistemas informacionais exigirão revisões periódicas, aperfeiçoamentos normativos e amadurecimento contínuo do modelo aqui apresentado.
+
+Recomenda-se que sua implementação seja acompanhada por processos de governança, validação técnica, capacitação institucional e diálogo permanente entre áreas de arquivo, tecnologia da informação, gestão pública e preservação digital.
+
+Por fim, reafirma-se que a interoperabilidade não é apenas um requisito tecnológico, mas condição essencial para assegurar direitos, transparência, memória institucional e continuidade administrativa em uma sociedade cada vez mais digital.
