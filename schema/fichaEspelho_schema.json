@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "fichaEspelho.json",
+  "title": "FichaEspelhoTransferencia",
+  "type": "object",
+  "description": "Metadados administrativos da transferência arquivística em pacote SIP para RDC-Arq.",
+  "additionalProperties": false,
+  "properties": {
+    "earqFichaEspelhoId": {
+      "type": "string",
+      "description": "Identificador único da ficha espelho."
+    },
+    "earqOrgaoProdutor": {
+      "$ref": "agente_schema.json",
+      "description": "Órgão produtor dos documentos transferidos."
+    },
+    "earqOrgaoCustodiadorDestino": {
+      "$ref": "agente_schema.json",
+      "description": "Arquivo ou instituição custodial de destino."
+    },
+    "earqFundoArquivistico": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nome"
+      ],
+      "properties": {
+        "codigo": {
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "descricao": {
+          "type": "string"
+        }
+      },
+      "description": "Identificação do fundo arquivístico associado ao SIP."
+    },
+    "earqGuia": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identificador",
+        "tipo"
+      ],
+      "properties": {
+        "identificador": {
+          "type": "string",
+          "description": "Identificador da guia de transferência ou recolhimento."
+        },
+        "tipo": {
+          "type": "string",
+          "enum": [
+            "transferência",
+            "recolhimento"
+          ]
+        },
+        "dataEmissao": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "earqPeriodoDocumental": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inicio",
+        "fim"
+      ],
+      "properties": {
+        "inicio": {
+          "type": "string",
+          "format": "date"
+        },
+        "fim": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "description": "Período abrangido pelos documentos transferidos."
+    },
+    "earqClasseId": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "codigo"
+      ],
+      "properties": {
+        "codigo": {
+          "type": "string"
+        },
+        "descricao": {
+          "type": "string"
+        },
+        "planoDeClassificacaoId": {
+          "type": "string"
+        }
+      },
+      "description": "Código de classificação completo aplicado ao conjunto transferido."
+    },
+    "earqQuantidadeDocumentos": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Quantidade de documentos presentes no SIP."
+    },
+    "earqQuantidadeProcessos": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "earqQuantidadeDossies": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "earqDataHoraEmpacotamento": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data e hora de criação do pacote SIP."
+    },
+    "earqResponsavelEnvio": {
+      "$ref": "agente_schema.json",
+      "description": "Agente responsável pelo envio do SIP."
+    },
+    "earqPacoteSipId": {
+      "type": "string",
+      "description": "Identificador ou nome da pasta raiz do pacote SIP."
+    },
+    "earqAlgoritmoHash": {
+      "type": "string",
+      "enum": [
+        "MD5",
+        "SHA-1",
+        "SHA-256",
+        "SHA-512",
+        "OUTRO"
+      ],
+      "default": "SHA-256"
+    },
+    "earqPacoteRepresentacaoId": {
+      "type": "string",
+      "description": "Identificador do pacote SIP-IR associado à guia."
+    },
+    "earqUnidadesArquivamento": {
+      "type": "array",
+      "description": "Lista das unidades de arquivamento presentes no SIP.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tipo",
+          "identificador",
+          "caminho"
+        ],
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "documento",
+              "processo",
+              "dossie"
+            ]
+          },
+          "identificador": {
+            "type": "string"
+          },
+          "caminho": {
+            "type": "string",
+            "pattern": "^(DA|PR|DS)-[A-Za-z0-9-]+/?$"
+          }
+        }
+      }
+    },
+    "earqEventos": {
+      "type": "array",
+      "description": "Eventos de empacotamento, validação, admissão, rejeição ou aceitação do SIP.",
+      "items": {
+        "$ref": "evento_schema.json"
+      }
+    },
+    "observacao": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "earqFichaEspelhoId",
+    "earqOrgaoProdutor",
+    "earqFundoArquivistico",
+    "earqGuia",
+    "earqPeriodoDocumental",
+    "earqClasseId",
+    "earqQuantidadeDocumentos",
+    "earqDataHoraEmpacotamento",
+    "earqResponsavelEnvio",
+    "earqPacoteSipId"
+  ]
+}

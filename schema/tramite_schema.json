@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "tramite.json",
+  "title": "Tramite",
+  "type": "object",
+  "description": "Metadados administrativos do pacote de trâmite eletrônico entre órgãos ou sistemas.",
+  "additionalProperties": false,
+  "properties": {
+    "earqTramiteId": {
+      "type": "string",
+      "description": "Identificador único do pacote de trâmite."
+    },
+    "earqTramiteOrgaoOrigem": {
+      "$ref": "agente_schema.json",
+      "description": "Órgão ou agente institucional de origem do trâmite."
+    },
+    "earqTramiteOrgaoDestino": {
+      "$ref": "agente_schema.json",
+      "description": "Órgão ou agente institucional de destino do trâmite."
+    },
+    "earqTramiteDataHoraEnvio": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data e hora de envio do pacote no padrão ISO 8601."
+    },
+    "earqTramiteAlgoritmoHash": {
+      "type": "string",
+      "enum": [
+        "MD5",
+        "SHA-1",
+        "SHA-256",
+        "SHA-512",
+        "OUTRO"
+      ],
+      "default": "SHA-256",
+      "description": "Algoritmo utilizado no manifesto de integridade do pacote BagIt."
+    },
+    "earqTramiteManifesto": {
+      "type": "string",
+      "description": "Nome ou caminho relativo do arquivo de manifesto do pacote, por exemplo manifest-sha256.txt."
+    },
+    "earqTramiteUnidadesArquivamento": {
+      "type": "array",
+      "description": "Lista das unidades de arquivamento tramitadas no pacote.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tipo",
+          "identificador",
+          "caminho"
+        ],
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "documento",
+              "processo",
+              "dossie"
+            ],
+            "description": "Tipo da entidade tramitada."
+          },
+          "identificador": {
+            "type": "string",
+            "description": "Identificador único da entidade, correspondente aos metadados internos."
+          },
+          "caminho": {
+            "type": "string",
+            "pattern": "^(DA|PR|DS)-[A-Za-z0-9-]+/?$",
+            "description": "Caminho relativo da pasta da entidade dentro de data/."
+          },
+          "schema": {
+            "type": "string",
+            "enum": [
+              "documento_schema.json",
+              "processo_dossie_schema.json"
+            ],
+            "description": "Schema aplicável ao arquivo principal de metadados da entidade."
+          }
+        }
+      }
+    },
+    "earqEventos": {
+      "type": "array",
+      "description": "Eventos associados ao envio, validação ou recebimento do pacote.",
+      "items": {
+        "$ref": "evento_schema.json"
+      }
+    },
+    "observacao": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "earqTramiteId",
+    "earqTramiteOrgaoOrigem",
+    "earqTramiteOrgaoDestino",
+    "earqTramiteDataHoraEnvio",
+    "earqTramiteEntidades",
+    "earqTramiteAlgoritmoHash"
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "InformacaoRepresentacao_schema.json",
+  "title": "InformacaoRepresentacao",
+  "type": "object",
+  "description": "Metadados do pacote de informação de representação necessário para interpretação dos documentos de uma guia.",
+  "additionalProperties": false,
+  "properties": {
+    "earqRepresentacaoId": {
+      "type": "string",
+      "description": "Identificador único do pacote de informação de representação."
+    },
+    "earqGuiaId": {
+      "type": "string",
+      "description": "Identificador da guia de transferência ou recolhimento à qual a representação se aplica."
+    },
+    "earqFundoArquivistico": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nome"
+      ],
+      "properties": {
+        "codigo": {
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "descricao": {
+          "type": "string"
+        }
+      }
+    },
+    "earqDataHoraCriacao": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data e hora de criação do pacote SIP-IR."
+    },
+    "earqResponsavelCriacao": {
+      "$ref": "agente_schema.json",
+      "description": "Agente responsável pela criação do pacote de representação."
+    },
+    "earqFormatos": {
+      "type": "array",
+      "description": "Especificações de formatos necessárias para interpretação dos objetos digitais.",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "formato_schema.json"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "caminhoDocumentacao": {
+                "type": "string",
+                "description": "Caminho relativo para documentação técnica do formato dentro do pacote."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "earqSoftwares": {
+      "type": "array",
+      "description": "Softwares necessários ou recomendados para leitura, renderização ou validação.",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "software_schema.json"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "finalidade": {
+                "type": "string"
+              },
+              "caminhoInstaladorOuDocumentacao": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "earqFontes": {
+      "type": "array",
+      "description": "Fontes tipográficas necessárias para correta renderização dos documentos.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "nome"
+        ],
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "versao": {
+            "type": "string"
+          },
+          "formato": {
+            "type": "string"
+          },
+          "caminho": {
+            "type": "string",
+            "description": "Caminho relativo da fonte dentro da pasta fontes/."
+          },
+          "licenca": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "earqDependencias": {
+      "type": "array",
+      "description": "Dependências técnicas necessárias para interpretação dos objetos.",
+      "items": {
+        "$ref": "dependencia_schema.json"
+      }
+    },
+    "earqDocumentacao": {
+      "type": "array",
+      "description": "Documentação técnica incluída no pacote de representação.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "titulo",
+          "caminho"
+        ],
+        "properties": {
+          "titulo": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "manual",
+              "especificação",
+              "norma",
+              "dicionário de dados",
+              "outro"
+            ]
+          },
+          "caminho": {
+            "type": "string",
+            "description": "Caminho relativo do documento dentro da pasta documentacao/."
+          },
+          "formato": {
+            "$ref": "formato_schema.json"
+          },
+          "descricao": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "earqSipsRelacionados": {
+      "type": "array",
+      "description": "Identificadores dos SIPs de conteúdo associados a esta informação de representação.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "earqEventos": {
+      "type": "array",
+      "description": "Eventos relacionados à criação, validação ou atualização do pacote de representação.",
+      "items": {
+        "$ref": "evento_schema.json"
+      }
+    },
+    "observacao": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "earqRepresentacaoId",
+    "earqGuiaId",
+    "earqDataHoraCriacao",
+    "earqResponsavelCriacao"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "earqFormatos"
+      ]
+    },
+    {
+      "required": [
+        "earqSoftwares"
+      ]
+    },
+    {
+      "required": [
+        "earqFontes"
+      ]
+    },
+    {
+      "required": [
+        "earqDependencias"
+      ]
+    },
+    {
+      "required": [
+        "earqDocumentacao"
+      ]
+    }
+  ]
+}
