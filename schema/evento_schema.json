@@ -5,7 +5,7 @@
   "type": "object",
   "description": "Evento associado a documento/processo (ex.: ações de gestão/preservação, tramitação, captura, assinatura, verificação de fixidez etc.).",
   "properties": {
-    "EarqEventoId": {
+    "earqEventoId": {
       "type": "string",
       "description": "Identificador único do evento (ex.: UUID, URI ou código interno)."
     },
@@ -74,7 +74,7 @@
     }
   },
   "required": [
-    "EarqEventoId",
+    "earqEventoId",
     "EarqEventoTipo",
     "EarqEventoDataHora",
     "EarqEventoAgente"

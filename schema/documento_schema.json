@@ -2,27 +2,27 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Documento",
   "type": "object",    
-  "required": ["earqDocumentoId", "DcTitle", "dc.date.issued", "earqDocumentoMeio", "earqDocumentoStatus", "earqDocumentoVersao", "earqDocumentoAutor", "earqDocumentoDestinatario", "earqDocumentoRedator", "earqClasseId", "earqNivelDeAcessoId", "earqDocumentoIndicacaoAnotacao"  ],
+  "required": ["earqDocumentoId", "dcTitle", "dcDateIssued", "earqDocumentoMeio", "earqDocumentoStatus", "earqDocumentoVersao", "earqDocumentoAutor", "earqDocumentoRedator", "earqClasseId", "earqNivelDeAcessoId", "earqDocumentoIndicacaoAnotacao"  ],
   "properties": {
     "earqDocumentoId": { "type": "string" },
-    "DcTitle": { "type": "string" },
-    "DcDescription": { "type": "string" },
-    "DcSubject": {
+    "dcTitle": { "type": "string" },
+    "dcDescription": { "type": "string" },
+    "dcSubject": {
       "type": "array",
       "items": { "type": "string" }
     },
-    "dc.relation": {
+    "dcRrelation": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "earqDocumentoId": { "type": "string" },
           "earqProcessoId": { "type": "string" },
-          "DcTitle": { "type": "string" }
+          "dcTitle": { "type": "string" }
         }
       }
     },
-    "dc.date.issued": {"type": "string", "format": "date" }, 
+    "dcDateIssued": {"type": "string", "format": "date" }, 
     "earqDocumentoNumero": { "type": "string" },
     "earqDocumentoProtocolo": { "type": "string" },
     "earqProcessoDossieId": { "type": "string" },
@@ -63,7 +63,7 @@
     }, 
     "earqDocumentoEspecie": { "type": "string" },
     "earqDocumentoTipo": { "type": "string" },
-    "dc.language": {
+    "dcLanguage": {
       "type": "string",
       "pattern": "^[a-z]{3}$" 
     },

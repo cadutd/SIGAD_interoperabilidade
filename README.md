@@ -163,7 +163,7 @@ Abaixo, para cada schema: **finalidade, campos, tipo, obrigatoriedade, valores c
 | `earqDocumentoStatus` | `string` | Sim | `minuta`, `original`, `cópia`, `versão autenticada`, `conferida`, `assinada digitalmente` | Estado diplomático ou situação documental da peça. |
 | `earqDocumentoVersao` | `integer` | Sim | mínimo `1` | Número da versão do documento. Utilizado para controle evolutivo de conteúdo. |
 | `earqDocumentoAutor[]` | `array(Agente)` | Sim | mínimo `1` item | Lista de autores do documento. Cada item referencia `agente_schema.json`. |
-| `earqDocumentoDestinatario[]` | `array(Agente)` | Sim |  | Lista de destinatários do documento. Utilizado para documentos expedidos ou comunicacionais. |
+| `earqDocumentoDestinatario[]` | `array(Agente)` | Não |  | Lista de destinatários do documento. Utilizado para documentos expedidos ou comunicacionais. |
 | `earqDocumentoInteressado[]` | `array(Agente)` | Não |  | Lista de pessoas ou entidades interessadas no conteúdo ou efeitos do documento. |
 | `earqDocumentoOriginador` | `Agente` | Não | `$ref` | Agente originador do documento. Pode representar unidade produtora, sistema de origem ou pessoa responsável pela emissão. |
 | `earqDocumentoRedator` | `Agente` | Sim | `$ref` | Agente redator do documento. Representa quem redigiu ou materializou o conteúdo documental. |
